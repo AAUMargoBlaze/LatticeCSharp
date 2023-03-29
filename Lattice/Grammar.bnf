@@ -1,0 +1,75 @@
+{
+  tokens = [
+    SEMICOLON=";"
+    LEFT_BRACE="{"
+    RIGHT_BRACE="}"
+    LEFT_PAREN="("
+    RIGHT_PAREN=")"
+    COMMA=","
+
+    OP_ASSIGN="="
+
+    OP_B_EQ="=="
+    OP_B_NEQ="!="
+    OP_B_OR="||"
+    OP_B_AND="&&"
+    OP_B_NOT="!"
+
+    OP_ADD="+"
+    OP_SUB="-"
+    OP_MULT="*"
+    OP_DIV="/"
+    OP_REM="%"
+    OP_GRT="<"
+
+    OP_REF="ref"
+    OP_CLONE="clone"
+
+    OP_PRINT="print"
+
+
+    TYPE_INT="int"
+    TYPE_FLOAT="float"
+    TYPE_STRING="str"
+    TYPE_BOOL="bool"
+    TYPE_GRAPH="graph"
+    TYPE_RELATIONSHIP="rel"
+
+    KEYWORD_TRUE="true"
+    KEYWORD_FALSE="false"
+
+
+    number='regexp:\d+'
+    space='regexp:\s+'
+    id="regexp:\w+"
+    string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+
+    line_comment="regexp://.*"
+    block_comment="regexp:/\*(.|\n)*\*/"
+    epsilon=""
+
+    OP_REL_LEFT="|-"
+    OP_REL_RIGHT="->"
+
+
+  ]
+}
+
+  Start        ::= Statements
+  Statements   ::= Statement Statements*
+  Statement    ::= VarDecl | GraphDecl | VarAssignOrGraphManip | PrintStatement
+  PrintStatement ::= OP_PRINT (id | string) SEMICOLON
+  VarDecl      ::= Type id VarDeclTail
+  VarDeclTail ::= TailVarAssign | SEMICOLON
+  GraphDecl    ::= TYPE_GRAPH id TailGraphManip;
+  Type         ::= TYPE_STRING | TYPE_FLOAT | TYPE_BOOL | TYPE_INT | TYPE_GRAPH
+  VarAssignOrGraphManip ::= id TailVarAssignOrGraphManip
+  TailVarAssignOrGraphManip ::= TailVarAssign | TailGraphManip
+  TailVarAssign  ::= OP_ASSIGN AssignVal SEMICOLON
+  AssignVal ::= number | string
+  TailGraphManip   ::= LEFT_BRACE ListGraphOp RIGHT_BRACE
+  ListGraphOp  ::= GraphOp ListGraphOp*
+  GraphOp      ::= AddRel | AddClone | AddRef
+  AddRef       ::= OP_REF id SEMICOLON
+  AddClone     ::= OP_CLONE id SEMICOLON
+  AddRel       ::= id OP_REL_LEFT number COMMA string OP_REL_RIGHT id

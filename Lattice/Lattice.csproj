@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.12.0" />
+      <PackageReference Include="Antlr4BuildTasks" Version="12.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="bin\Debug\net6.0\testgrammar" />
+      <None Include="bin\Debug\net6.0\TestGrammar.g4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="bin\Debug\net6.0\testfile" />
+    </ItemGroup>
+
+</Project>
