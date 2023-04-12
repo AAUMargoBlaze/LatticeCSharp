@@ -13,9 +13,11 @@ namespace Lattice
             var commonTokenStream = new CommonTokenStream(latticeLexer);
             var latticeParser = new LatticeParser(commonTokenStream);
 
-            var startContext = latticeParser.start();
-            var visitor = new ASTGenerator();
-            visitor.Visit(startContext);
+            
+            
+//            var startContext = latticeParser.start();
+//            var visitor = new ASTGenerator();
+//            visitor.Visit(startContext);
 
 
             // foreach (var statement in visitor.Statements)
