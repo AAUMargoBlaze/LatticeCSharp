@@ -2,7 +2,7 @@ using Antlr4.Runtime.Tree;
 
 namespace Lattice.CommonElements;
 
-public class LatticeVariable
+public class LatticeVariable : ICloneable
 {
     public readonly LatticeType Type;
     public readonly string Id;
@@ -37,40 +37,13 @@ public class LatticeVariable
     {
         Id = id;
         Type = type;
-        _value = GetDefaultValueOfLatticeType(type);
+        _value = LatticeTypeHelper.GetDefaultValueOfLatticeType(type);
     }
 
-    public static LatticeType StringToLatticeType(string typeName)
+    public object Clone()
     {
-        //TODO: see if you can hijack some nice ANTLR token instead of string
-        return typeName switch
-        {
-            "str" => LatticeType.Str,
-            "int" => LatticeType.Int,
-            "float" => LatticeType.Float,
-            "bool" => LatticeType.Bool,
-            _ => throw new ArgumentOutOfRangeException($"Invalid type name: {typeName}")
-        };
+        var cloned = new LatticeVariable(Id, Type);
+        cloned.Value = _value;
+        return cloned;
     }
-    public static dynamic GetDefaultValueOfLatticeType(LatticeType type)
-    {
-        return type switch
-        {
-            LatticeType.Int => default(int),
-            LatticeType.Str => "",
-            LatticeType.Float => default(float),
-            LatticeType.Bool => default(bool),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-    }
-    
-}
-
-//TODO move all the helper variables away from the Variable class
-public enum LatticeType
-{
-    Int,
-    Str,
-    Float,
-    Bool
 }

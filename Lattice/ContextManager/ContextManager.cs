@@ -2,33 +2,34 @@ namespace Lattice;
 
 public static class ContextManager
 {
-    private static Context _currentContext = new Context("Global") {GlobalContext = true};
+    private static readonly Stack<Context> ContextStack = new Stack<Context>(new []{  new Context("Global") { GlobalContext = true } });
 
     public static Context GetCurrentContext()
     {
-        return _currentContext;
+        return ContextStack.Peek();
     }
-    public static Context OpenNewContext()
+    public static Context OpenNewSubContext(string name)
     {
-        throw new NotImplementedException();
+        var newContext = new Context(name);
+        GetCurrentContext().DeclareContext(name, newContext);
+        ContextStack.Push(newContext);
+        
+        return GetCurrentContext();
     }
 
-    public static Context EnterSubContext()
+    public static Context EnterSubContext(string name)
     {
-        throw new NotImplementedException();
+        ContextStack.Push(GetCurrentContext().GetSubContext(name));
+        return GetCurrentContext();
     }
 
     public static Context ExitSubContext()
     {
-        throw new NotImplementedException();
-
-        if (_currentContext.GlobalContext)
+        if (GetCurrentContext().GlobalContext)
         {
             throw new Exception("Can't exit global context");
         }
-        else
-        {
-            //Enter new context
-        }
+        return ContextStack.Pop();
+        
     }
 }

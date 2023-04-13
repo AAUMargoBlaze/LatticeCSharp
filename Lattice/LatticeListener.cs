@@ -8,11 +8,10 @@ public class LatticeListener : LatticeBaseListener
     private Stack<(object value, Type type)>  _stack = new ();
     public override void ExitVardecl(LatticeParser.VardeclContext context)
     {
-        var currentContext = ContextManager.GetCurrentContext();
         var id = context.ID().GetText();
         var type = context.type().GetText();
 
-        var newLatticeVar = new LatticeVariable(id, LatticeVariable.StringToLatticeType(type));
+        var newLatticeVar = new LatticeVariable(id, LatticeTypeHelper.StringToLatticeType(type));
         ContextManager.GetCurrentContext().DeclareVariable(id, newLatticeVar);
         //GlobalFileManager.Write($"{id} {Program.NewLine}");
     }
@@ -31,7 +30,7 @@ public class LatticeListener : LatticeBaseListener
             
             GlobalFileManager.Write($"{ltVar.Id} = {ltVar.Value} {Program.NewLine}");
         }
-        catch (ArgumentException _) { } //it can be a graph
+        catch (ArgumentException) { } //it can be a graph
     }
 
     public override void ExitAssignval(LatticeParser.AssignvalContext context)

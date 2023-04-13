@@ -2,7 +2,7 @@ namespace Lattice;
 
 public static class GlobalFileManager
 {
-    private static string? path = null;
+    private static string? _path = null;
 
     public static void Initialize(string filename)
     {
@@ -10,7 +10,7 @@ public static class GlobalFileManager
         {
             filename = NormalizeOutFileName(filename);
             File.Create(filename).Close();
-            path = filename;
+            _path = filename;
         }
         catch (IOException e)
         {
@@ -19,7 +19,7 @@ public static class GlobalFileManager
     }
     public static void Write(string outString)
     {
-        if(path == null) 
+        if(_path == null) 
             WriteToStdout(outString);
         else
             WriteToPyFile(outString);
@@ -32,10 +32,8 @@ public static class GlobalFileManager
 
     private static void WriteToPyFile(string outString)
     {
-        using (var streamWriter = File.AppendText(path))
-        {
-            streamWriter.Write(outString);
-        }
+        using var streamWriter = File.AppendText(_path!);
+        streamWriter.Write(outString);
     }
     private static string NormalizeOutFileName(string filename)
     {
