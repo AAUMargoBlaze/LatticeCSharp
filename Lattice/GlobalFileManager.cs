@@ -34,7 +34,7 @@ public static class GlobalFileManager
     {
         using (var streamWriter = File.AppendText(path))
         {
-            streamWriter.Write(path);
+            streamWriter.Write(outString);
         }
     }
     private static string NormalizeOutFileName(string filename)
