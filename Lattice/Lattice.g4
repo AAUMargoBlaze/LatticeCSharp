@@ -38,7 +38,7 @@ tailvarassignorgraphmanip : tailvarassign | tailgraphmanip;
 tailvarassign : OP_ASSIGN assignval SEMICOLON; 
 assignval : STRING | number | expr | boolval; 
 boolval :KEYWORD_TRUE | KEYWORD_FALSE; 
-tailgraphmanip : LEFT_BRACE graphop? RIGHT_BRACE;
+tailgraphmanip : LEFT_BRACE graphop* RIGHT_BRACE;
 graphop  
     : addrel
     | addclone

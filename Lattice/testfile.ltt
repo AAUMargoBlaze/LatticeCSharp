@@ -9,4 +9,6 @@ print "world";
 print b;
 
 graph g1 {
+    int c = 5;
+    ref c;
 }

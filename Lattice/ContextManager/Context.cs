@@ -117,7 +117,7 @@ public class Context : ICloneable
 
     public void DeclareContext(string key, Context subContext)
     {
-        if (_variables.ContainsKey(key))
+        if (_subContexts.ContainsKey(key))
         {
             throw new ArgumentException($"Subcontext with name {subContext.Name} already declared inside {Name}");
         }
