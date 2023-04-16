@@ -36,7 +36,7 @@ type
 varassignorgraphmanip : ID tailvarassignorgraphmanip; 
 tailvarassignorgraphmanip : tailvarassign | tailgraphmanip; 
 tailvarassign : OP_ASSIGN assignval SEMICOLON; 
-assignval : STRING | expr | boolval; 
+assignval : STRING | number | expr | boolval; 
 boolval :KEYWORD_TRUE | KEYWORD_FALSE; 
 tailgraphmanip : LEFT_BRACE graphop? RIGHT_BRACE;
 graphop  
