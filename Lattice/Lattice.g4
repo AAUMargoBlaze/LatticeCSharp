@@ -38,8 +38,7 @@ tailvarassignorgraphmanip : tailvarassign | tailgraphmanip;
 tailvarassign : OP_ASSIGN assignval SEMICOLON; 
 assignval : STRING | expr | boolval; 
 boolval :KEYWORD_TRUE | KEYWORD_FALSE; 
-tailgraphmanip : LEFT_BRACE listgraphop RIGHT_BRACE;
-listgraphop : graphop listgraphop; 
+tailgraphmanip : LEFT_BRACE graphop? RIGHT_BRACE;
 graphop  
     : addrel
     | addclone
@@ -143,4 +142,4 @@ KEYWORD_FALSE : 'false';
 OP_REL_LEFT:'|-';
 OP_REL_RIGHT:'->';
 
-ID          : LETTER+;
+ID : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_');

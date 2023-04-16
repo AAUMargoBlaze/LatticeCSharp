@@ -201,16 +201,6 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.listgraphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterListgraphop([NotNull] LatticeParser.ListgraphopContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.listgraphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitListgraphop([NotNull] LatticeParser.ListgraphopContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.graphop"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

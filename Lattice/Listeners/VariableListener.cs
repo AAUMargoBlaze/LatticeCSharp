@@ -6,10 +6,11 @@ public class VariableListener : LatticeBaseListener
 {
     public override void ExitVardecl(LatticeParser.VardeclContext context)
     {
+        var type = LatticeTypeHelper.StringToLatticeType(context.type().GetText());
+        if (type == LatticeType.Graph) return;
+        
         var id = context.ID().GetText();
-        var type = context.type().GetText();
-
-        var newLatticeVar = new LatticeVariable(id, LatticeTypeHelper.StringToLatticeType(type));
+        var newLatticeVar = new LatticeVariable(id, type);
         if (ListenerHelper.SharedListenerStack.TryPop(out var valueTuple))
         {
             AssignVarValueAndPrintPythonCode(ref newLatticeVar, valueTuple);

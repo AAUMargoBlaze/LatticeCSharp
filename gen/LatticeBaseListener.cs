@@ -240,18 +240,6 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.listgraphop"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterListgraphop([NotNull] LatticeParser.ListgraphopContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.listgraphop"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitListgraphop([NotNull] LatticeParser.ListgraphopContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.graphop"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

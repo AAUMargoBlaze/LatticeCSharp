@@ -134,12 +134,6 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.listgraphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitListgraphop([NotNull] LatticeParser.ListgraphopContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.graphop"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
