@@ -4,7 +4,7 @@ public class DirectedRelationship : Relationship, ICloneable
 {
     public Node Successor { get; set; }
     public Node Predecessor { get; set; }
-    public DirectedRelationship(Node successor, Node predecessor) : base()
+    public DirectedRelationship(Node predecessor, Node successor) : base()
     {
         Successor = successor;
         Predecessor = predecessor;

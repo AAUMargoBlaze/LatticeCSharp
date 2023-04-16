@@ -7,7 +7,17 @@ public class StdLibListener : LatticeBaseListener
         var outVal = context.STRING()?.GetText();
         var id = context.ID()?.GetText();
         if (id != null)
-            outVal = ContextManager.GetCurrentContext().GetVariable(id).Value.ToString();
+        {
+            var currentGraph = ContextManager.GetCurrentContext();
+            try
+            {
+                outVal = currentGraph.GetVariable(id).Value.ToString();
+            }
+            catch (ArgumentException e)
+            {
+                outVal = currentGraph.GetSubContext(id).Name;
+            }
+        }
 
         if (outVal != null)
         {

@@ -10,5 +10,10 @@ print b;
 
 graph g1 {
     int c = 5;
+    int d = 6;
     ref c;
+    ref d;
+    
+    c |-5,"hi"-> d
 }
+print g1;
