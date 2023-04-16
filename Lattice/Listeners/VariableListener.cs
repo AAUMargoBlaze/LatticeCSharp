@@ -1,19 +1,20 @@
-using Antlr4.Runtime.Tree;
 using Lattice.CommonElements;
 
-namespace Lattice;
+namespace Lattice.Listeners;
 
-public class LatticeListener : LatticeBaseListener
+public class VariableListener : LatticeBaseListener
 {
-    private Stack<(object value, Type type)>  _stack = new ();
     public override void ExitVardecl(LatticeParser.VardeclContext context)
     {
         var id = context.ID().GetText();
         var type = context.type().GetText();
 
         var newLatticeVar = new LatticeVariable(id, LatticeTypeHelper.StringToLatticeType(type));
+        if (ListenerHelper.SharedListenerStack.TryPop(out var valueTuple))
+        {
+            AssignVarValueAndPrintPythonCode(ref newLatticeVar, valueTuple);
+        }
         ContextManager.GetCurrentContext().DeclareVariable(id, newLatticeVar);
-        //GlobalFileManager.Write($"{id} {Program.NewLine}");
     }
 
     public override void ExitVarassignorgraphmanip(LatticeParser.VarassignorgraphmanipContext context)
@@ -25,47 +26,38 @@ public class LatticeListener : LatticeBaseListener
             var ltVar = ContextManager.GetCurrentContext().GetVariable(id);
             
             //pushed in ExitAssignval()
-            var pair = _stack.Pop();
-            ltVar.Value = Convert.ChangeType(pair.value, pair.type);
-            
-            GlobalFileManager.Write($"{ltVar.Id} = {ltVar.Value} {Program.NewLine}");
+            var pair = ListenerHelper.SharedListenerStack.Pop();
+            AssignVarValueAndPrintPythonCode(ref ltVar, pair);
+
         }
         catch (ArgumentException) { } //it can be a graph
     }
-
     public override void ExitAssignval(LatticeParser.AssignvalContext context)
     {
         //TODO: probably there is a nicer solution here
         var temp = context.INTEGER()?.GetText();
         if (temp != null)
         {
-            _stack.Push((temp, typeof(int)));
+            ListenerHelper.SharedListenerStack.Push((temp, typeof(int)));
             return;
         }
         temp = context.STRING()?.GetText();
         
         if (temp != null)
         {
-            _stack.Push((temp, typeof(string)));
+            ListenerHelper.SharedListenerStack.Push((temp, typeof(string)));
             return;
         }
-        
     }
 
-    public override void ExitPrintstatement(LatticeParser.PrintstatementContext context)
+    public override void ExitType(LatticeParser.TypeContext context)
     {
-        var outVal = context.STRING()?.GetText();
-        var id = context.ID()?.GetText();
-        if (id != null)
-            outVal = ContextManager.GetCurrentContext().GetVariable(id).Value.ToString();
+        base.ExitType(context);
+    }
 
-        if (outVal != null)
-        {
-            GlobalFileManager.Write($"print({outVal}) {Program.NewLine}");
-        }
-        else
-        {
-            throw new Exception("Invalid print statement");
-        }
+    private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, (object value, Type type) valueTuple)
+    {
+        targetVar.Value = Convert.ChangeType(valueTuple.value, valueTuple.type);
+        GlobalFileManager.Write($"{targetVar.Id} = {targetVar.Value} {Program.NewLine}");
     }
 }
