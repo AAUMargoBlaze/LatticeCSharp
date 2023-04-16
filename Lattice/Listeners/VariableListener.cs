@@ -36,12 +36,20 @@ public class VariableListener : LatticeBaseListener
     public override void ExitAssignval(LatticeParser.AssignvalContext context)
     {
         //TODO: probably there is a nicer solution here
-        var temp = context.INTEGER()?.GetText();
+        var temp = context.number().INTEGER().GetText();
         if (temp != null)
         {
             ListenerHelper.SharedListenerStack.Push((temp, typeof(int)));
             return;
         }
+        
+        temp = context.number().FLOAT_LIT().GetText();
+        if (temp != null)
+        {
+            ListenerHelper.SharedListenerStack.Push((temp, typeof(float)));
+            return;
+        }
+        
         temp = context.STRING()?.GetText();
         
         if (temp != null)

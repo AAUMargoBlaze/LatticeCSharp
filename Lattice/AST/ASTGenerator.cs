@@ -3,12 +3,7 @@ namespace Lattice.AST
     public class ASTGenerator : LatticeBaseVisitor<object>
     {
 
-        public override object VisitStatements(LatticeParser.StatementsContext context)
-        {
-            // Statements.Add(new Statement(context.GetText()));
-            // Console.WriteLine(context.GetText());
-            return VisitChildren(context);
-        }
+
 
         public override object VisitVardecl(LatticeParser.VardeclContext context)
         {
