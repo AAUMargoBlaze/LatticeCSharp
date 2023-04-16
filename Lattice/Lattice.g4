@@ -43,6 +43,7 @@ graphop
     : addrel
     | addclone
     | addref
+    | vardecl
     ;
 addref : OP_REF ID SEMICOLON; 
 addclone : OP_CLONE ID SEMICOLON; 

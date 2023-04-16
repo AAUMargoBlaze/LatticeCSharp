@@ -11,7 +11,7 @@ public class LatticeTypeHelper
             "int" => LatticeType.Int,
             "float" => LatticeType.Float,
             "bool" => LatticeType.Bool,
-            "graph" => LatticeType.Bool,
+            "graph" => LatticeType.Graph,
             _ => throw new ArgumentOutOfRangeException($"Invalid type name: {typeName}")
         };
     }

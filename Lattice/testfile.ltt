@@ -1,3 +1,12 @@
-g {
-ref a;
+str a;
+int b = 2022;
+
+a = "hello";
+b = 2023;
+
+print a;
+print "world";
+print b;
+
+graph g1 {
 }
