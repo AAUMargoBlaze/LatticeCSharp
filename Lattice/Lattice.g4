@@ -8,8 +8,7 @@ options {
  * Parser Rules
  */
  
-start       : statements ;
-statements  : statement statements*;
+start:statement*;
 statement 
     : vardecl 
     | graphdecl
