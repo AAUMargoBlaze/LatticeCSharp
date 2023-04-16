@@ -22,6 +22,7 @@ namespace Lattice
             
             latticeParser.AddParseListener(new VariableListener());
             latticeParser.AddParseListener(new StdLibListener());
+            latticeParser.AddParseListener(new GraphListener());
             latticeParser.start();
 
 
