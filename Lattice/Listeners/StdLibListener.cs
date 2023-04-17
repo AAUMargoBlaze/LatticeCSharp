@@ -1,7 +1,17 @@
+using System.Text.RegularExpressions;
+using Antlr4.Runtime;
+
 namespace Lattice.Listeners;
 
 public class StdLibListener : LatticeBaseListener
 {
+    private CommonTokenStream _tokenStream;
+
+    public StdLibListener(CommonTokenStream tokenStream)
+    {
+        _tokenStream = tokenStream;
+    }
+
     public override void EnterStart(LatticeParser.StartContext context)
     {
         GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
@@ -35,4 +45,42 @@ public class StdLibListener : LatticeBaseListener
             throw new Exception("Invalid print statement");
         }
     }
+
+    public override void ExitEveryRule(ParserRuleContext context)
+    {
+        var channel99Tokens = _tokenStream.GetTokens(context.Start.TokenIndex, context.Stop.TokenIndex)
+            .Where(t => t.Channel == 99);
+        if (channel99Tokens.Any())
+        {
+            var text = string.Join("", channel99Tokens.Select(t => t.Text));
+            GlobalFileManager.Write(StripPythonTag(text));
+        }
+    }
+
+    private string StripPythonTag(string input)
+    {
+        string[] pythonTags = { "<PYTHON>", "</PYTHON>", "🐍" };
+        string output = input;
+
+        foreach (string tag in pythonTags)
+        {
+            if (output.StartsWith(tag))
+            {
+                output = output.Substring(tag.Length);
+                break;
+            }
+        }
+
+        foreach (string tag in pythonTags.Reverse())
+        {
+            if (output.EndsWith(tag))
+            {
+                output = output.Substring(0, output.Length - tag.Length);
+                break;
+            }
+        }
+
+        return output;
+    }
+
 }
