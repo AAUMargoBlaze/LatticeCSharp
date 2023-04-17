@@ -81,7 +81,7 @@ public class GraphListener : LatticeBaseListener
         GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}'), ");
         
         var cost = Convert.ToInt32(context.number().GetText());
-        GlobalFileManager.Write($"CEdge({cost}, ");
+        GlobalFileManager.Write($"TraverseEdge({cost}, ");
 
         
         var label = context.STRING().GetText().Replace("\"", string.Empty);

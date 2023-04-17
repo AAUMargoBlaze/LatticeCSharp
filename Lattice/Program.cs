@@ -9,16 +9,19 @@ namespace Lattice
     public class Program
     {
         public static string NewLine = "\r\n";
-        public static void Main()
+        public static void Main(string[] args)
         {
-            using Stream stream = new FileStream("/Users/balazsagardi/Non-Sync Docs/repos/LatticeCSharp/Lattice/testfile.ltt", FileMode.Open);
+            string sourceFile = args[0];
+            string outFile = args[1];
+            
+            using Stream stream = new FileStream(sourceFile, FileMode.Open);
             var inputStream = new AntlrInputStream(stream);
             var latticeLexer = new LatticeLexer(inputStream);
             var commonTokenStream = new CommonTokenStream(latticeLexer);
             var latticeParser = new LatticeParser(commonTokenStream);
 
 
-            //GlobalFileManager.Initialize("out");
+            GlobalFileManager.Initialize(outFile);
             
             latticeParser.AddParseListener(new VariableListener());
             latticeParser.AddParseListener(new StdLibListener());

@@ -2,6 +2,13 @@ namespace Lattice.Listeners;
 
 public class StdLibListener : LatticeBaseListener
 {
+    public override void EnterStart(LatticeParser.StartContext context)
+    {
+        GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
+        GlobalFileManager.Write($"from lattice import TraverseEdge {Program.NewLine}");
+        GlobalFileManager.Write($"from lattice import BBTree, Graph {Program.NewLine}");
+    }
+
     public override void ExitPrintstatement(LatticeParser.PrintstatementContext context)
     {
         var outVal = context.STRING()?.GetText();
