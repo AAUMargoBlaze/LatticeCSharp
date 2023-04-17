@@ -21,11 +21,12 @@ namespace Lattice
             var latticeParser = new LatticeParser(commonTokenStream);
 
 
-            GlobalFileManager.Initialize(outFile);
+            //GlobalFileManager.Initialize(outFile);
             
             latticeParser.AddParseListener(new VariableListener());
             latticeParser.AddParseListener(new StdLibListener());
             latticeParser.AddParseListener(new GraphListener());
+            latticeParser.AddParseListener(new BooleanListener());
             latticeParser.start();
 
 

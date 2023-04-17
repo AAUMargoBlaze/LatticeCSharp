@@ -95,9 +95,6 @@ public class GraphListener : LatticeBaseListener
         ContextManager.GetCurrentContext().DeclareRelationship(relationship);
 
         GlobalFileManager.Write($")) {Program.NewLine}");
-
-        //graph1.add_edge(graph1.get_node('mynode'), graph1.get_node('a'), CEdge(5, "drive"))
-
     }
 
     private void OpenNewContext(string id)
