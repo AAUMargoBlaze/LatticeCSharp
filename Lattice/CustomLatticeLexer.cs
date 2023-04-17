@@ -15,12 +15,40 @@ public class CustomLatticeLexer : LatticeLexer
             var tokenText = Text;
             Text = null; // clear the buffer
             var token = base.Emit();
-            Console.WriteLine(tokenText);
+            
+            //write out type python code
+            GlobalFileManager.Write(StripPythonTag(tokenText));
+            
             return token;
         }
         else
         {
             return base.Emit();
         }
+    }
+    private string StripPythonTag(string input)
+    {
+        string[] pythonTags = { "<PYTHON>", "</PYTHON>", "🐍" , "🦅"};
+        string output = input;
+
+        foreach (string tag in pythonTags)
+        {
+            if (output.StartsWith(tag))
+            {
+                output = output.Substring(tag.Length);
+                break;
+            }
+        }
+
+        foreach (string tag in pythonTags.Reverse())
+        {
+            if (output.EndsWith(tag))
+            {
+                output = output.Substring(0, output.Length - tag.Length);
+                break;
+            }
+        }
+
+        return output;
     }
 }

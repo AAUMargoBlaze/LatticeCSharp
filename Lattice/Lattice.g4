@@ -96,7 +96,7 @@ SINGLELINE_COMMENT  : '//' (CHARACTER | WS)* NEWLINE -> skip;
 MULTILINE_COMMENT   : '/*' .*? '*/' -> skip;
 
 PYTHON   : '<PYTHON>' .*? '</PYTHON>' -> channel(99);
-SNEK   : '🐍' .*? '🐍' -> channel(99);
+SNEK   : '🐍' .*? '🦅' -> channel(99);
 
 STRING              : DQ_STRING | SQ_STRING;
 FLOAT_LIT           : '-'? NATURAL_NUMBER '.' DIGIT+;
