@@ -1,4 +1,5 @@
 using Antlr4.Runtime;
+using Lattice.Listeners;
 
 namespace Lattice;
 
@@ -17,13 +18,16 @@ public class CustomLatticeLexer : LatticeLexer
             var token = base.Emit();
             
             //write out type python code
-            GlobalFileManager.Write(StripPythonTag(tokenText));
+            ListenerHelper.LexerInterjects.Enqueue(StripPythonTag(tokenText));
             
             return token;
         }
         else
         {
-            return base.Emit();
+            var token = base.Emit();
+            var tokenText = Text;
+
+            return token;
         }
     }
     private string StripPythonTag(string input)
