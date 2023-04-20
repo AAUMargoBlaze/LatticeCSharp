@@ -1,7 +1,26 @@
+using System.Text.RegularExpressions;
+using Antlr4.Runtime;
+
 namespace Lattice.Listeners;
 
 public class StdLibListener : LatticeBaseListener
 {
+    private CommonTokenStream _tokenStream;
+
+    public StdLibListener(CommonTokenStream tokenStream)
+    {
+        _tokenStream = tokenStream;
+    }
+
+    public override void EnterEveryRule(ParserRuleContext context)
+    {
+        while (ListenerHelper.LexerInterjects.Count > 0)
+        {
+            var interject = ListenerHelper.LexerInterjects.Dequeue();
+            GlobalFileManager.Write(interject);
+        }
+    }
+
     public override void EnterStart(LatticeParser.StartContext context)
     {
         GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
@@ -15,24 +34,14 @@ public class StdLibListener : LatticeBaseListener
         var id = context.ID()?.GetText();
         if (id != null)
         {
-            var currentGraph = ContextManager.GetCurrentContext();
-            try
-            {
-                outVal = currentGraph.GetVariable(id).Value.ToString();
-            }
-            catch (ArgumentException e)
-            {
-                outVal = currentGraph.GetSubContext(id).Name;
-            }
+            GlobalFileManager.Write($"print({id}) {Program.NewLine}");
+            return;
         }
-
         if (outVal != null)
         {
             GlobalFileManager.Write($"print({outVal}) {Program.NewLine}");
+            return;
         }
-        else
-        {
-            throw new Exception("Invalid print statement");
-        }
+        throw new Exception("Invalid print statement");
     }
 }

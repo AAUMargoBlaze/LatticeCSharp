@@ -1,4 +1,5 @@
-﻿using Antlr4.Runtime;
+using System.Text;
+using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Lattice.AST;
 using Lattice.CommonElements;
@@ -13,18 +14,18 @@ namespace Lattice
         {
             string sourceFile = args[0];
             string outFile = args[1];
-            
-            using Stream stream = new FileStream(sourceFile, FileMode.Open);
-            var inputStream = new AntlrInputStream(stream);
-            var latticeLexer = new LatticeLexer(inputStream);
+            //GlobalFileManager.Initialize(outFile);
+
+            string fileContents = File.ReadAllText(sourceFile);
+            var inputStream = new CodePointCharStream(fileContents);
+            var latticeLexer = new CustomLatticeLexer(inputStream);
             var commonTokenStream = new CommonTokenStream(latticeLexer);
             var latticeParser = new LatticeParser(commonTokenStream);
 
 
-            //GlobalFileManager.Initialize(outFile);
             
+            latticeParser.AddParseListener(new StdLibListener(commonTokenStream));
             latticeParser.AddParseListener(new VariableListener());
-            latticeParser.AddParseListener(new StdLibListener());
             latticeParser.AddParseListener(new GraphListener());
             latticeParser.AddParseListener(new BooleanListener());
             latticeParser.start();

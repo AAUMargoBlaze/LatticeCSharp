@@ -32,6 +32,7 @@ public class VariableListener : LatticeBaseListener
 
         }
         catch (ArgumentException) { } //it can be a graph
+        //todo, if neither graph nor var assign catches it throw exception
     }
     public override void ExitAssignval(LatticeParser.AssignvalContext context)
     {
