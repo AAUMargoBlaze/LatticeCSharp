@@ -1,4 +1,5 @@
 using Antlr4.Runtime.Tree;
+using Lattice.CommonElements.Expressions;
 
 namespace Lattice.CommonElements;
 
@@ -21,7 +22,8 @@ public class LatticeVariable : ICloneable
                     (newValueType == typeof(float) && Type == LatticeType.Float) ||
                     (newValueType == typeof(double) && Type == LatticeType.Float) ||
                     (newValueType == typeof(bool) && Type == LatticeType.Bool)
-                )
+                    (newValueType == typeof(BooleanExpression) && Type == LatticeType.Bool)
+            )
             {
                 _value = value;
             }

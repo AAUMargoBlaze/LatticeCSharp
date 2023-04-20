@@ -58,11 +58,7 @@ public class VariableListener : LatticeBaseListener
             ListenerHelper.SharedListenerStack.Push((temp, typeof(string)));
             return;
         }
-    }
-
-    public override void ExitType(LatticeParser.TypeContext context)
-    {
-        base.ExitType(context);
+        //bool handled in BooleanListener
     }
 
     private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, (object value, Type type) valueTuple)

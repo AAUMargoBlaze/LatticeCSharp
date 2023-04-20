@@ -238,6 +238,12 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitIfblock([NotNull] LatticeParser.IfblockContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOutmostboolexpr([NotNull] LatticeParser.OutmostboolexprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>BOOLVAL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>

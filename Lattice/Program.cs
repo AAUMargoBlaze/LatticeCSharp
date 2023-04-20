@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Lattice.AST;
@@ -27,6 +27,7 @@ namespace Lattice
             latticeParser.AddParseListener(new StdLibListener(commonTokenStream));
             latticeParser.AddParseListener(new VariableListener());
             latticeParser.AddParseListener(new GraphListener());
+            latticeParser.AddParseListener(new BooleanListener());
             latticeParser.start();
 
 
