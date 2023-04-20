@@ -1,7 +1,26 @@
+using System.Text.RegularExpressions;
+using Antlr4.Runtime;
+
 namespace Lattice.Listeners;
 
 public class StdLibListener : LatticeBaseListener
 {
+    private CommonTokenStream _tokenStream;
+
+    public StdLibListener(CommonTokenStream tokenStream)
+    {
+        _tokenStream = tokenStream;
+    }
+
+    public override void EnterEveryRule(ParserRuleContext context)
+    {
+        while (ListenerHelper.LexerInterjects.Count > 0)
+        {
+            var interject = ListenerHelper.LexerInterjects.Dequeue();
+            GlobalFileManager.Write(interject);
+        }
+    }
+
     public override void EnterStart(LatticeParser.StartContext context)
     {
         GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
