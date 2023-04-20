@@ -34,24 +34,14 @@ public class StdLibListener : LatticeBaseListener
         var id = context.ID()?.GetText();
         if (id != null)
         {
-            var currentGraph = ContextManager.GetCurrentContext();
-            try
-            {
-                outVal = currentGraph.GetVariable(id).Value.ToString();
-            }
-            catch (ArgumentException e)
-            {
-                outVal = currentGraph.GetSubContext(id).Name;
-            }
+            GlobalFileManager.Write($"print({id}) {Program.NewLine}");
+            return;
         }
-
         if (outVal != null)
         {
             GlobalFileManager.Write($"print({outVal}) {Program.NewLine}");
+            return;
         }
-        else
-        {
-            throw new Exception("Invalid print statement");
-        }
+        throw new Exception("Invalid print statement");
     }
 }
