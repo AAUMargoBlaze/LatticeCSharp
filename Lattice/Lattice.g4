@@ -60,7 +60,8 @@ expr : OP_SUB expr     # UMINUS
 number : INTEGER | FLOAT_LIT; 
 addop : OP_ADD | OP_SUB ; 
 mulop : OP_MULT | OP_DIV | OP_REM ;
-ifblock : KEYWORD_IF LEFT_PAREN boolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE (KEYWORD_ELSE LEFT_BRACE statement* RIGHT_BRACE)?; 
+ifblock : KEYWORD_IF LEFT_PAREN outmostboolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE (KEYWORD_ELSE LEFT_BRACE statement* RIGHT_BRACE)?; 
+outmostboolexpr : boolexpr; 
 boolexpr : OP_B_NOT boolexpr #NOT 
             | boolexpr boolop boolexpr #BOOLOP
             | assignval compop assignval #COMPGRP
@@ -72,7 +73,7 @@ boolexpr : OP_B_NOT boolexpr #NOT
 boolop :OP_B_AND | OP_B_OR; 
 compop :  OP_B_EQ | OP_B_NEQ | OP_GRT; 
 funccall : ID LEFT_PAREN (listparams)? RIGHT_PAREN; 
-whileblock : KEYWORD_WHILE LEFT_PAREN boolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE; /*add break and continue ? */
+whileblock : KEYWORD_WHILE LEFT_PAREN outmostboolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE; /*add break and continue ? */
 listparams : param taillistparams;
 param : ID;
 taillistparams : (COMMA param)*;

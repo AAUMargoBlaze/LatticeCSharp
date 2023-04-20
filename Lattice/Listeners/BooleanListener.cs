@@ -12,6 +12,7 @@ public class BooleanListener : LatticeBaseListener
 
     public override void ExitNOT(LatticeParser.NOTContext context)
     {
+        
         base.ExitNOT(context);
     }
 

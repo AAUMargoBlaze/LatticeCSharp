@@ -377,6 +377,16 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIfblock([NotNull] LatticeParser.IfblockContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutmostboolexpr([NotNull] LatticeParser.OutmostboolexprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutmostboolexpr([NotNull] LatticeParser.OutmostboolexprContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BOOLVAL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>

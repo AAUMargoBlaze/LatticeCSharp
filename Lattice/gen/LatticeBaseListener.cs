@@ -448,6 +448,18 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIfblock([NotNull] LatticeParser.IfblockContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutmostboolexpr([NotNull] LatticeParser.OutmostboolexprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutmostboolexpr([NotNull] LatticeParser.OutmostboolexprContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BOOLVAL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// <para>The default implementation does nothing.</para>
