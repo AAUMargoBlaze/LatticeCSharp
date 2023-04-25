@@ -49,28 +49,40 @@ public class BooleanListener : LatticeBaseListener
 
     }
 
-    public override void ExitCompop(LatticeParser.CompopContext context)
+    public override void ExitCOMPGRP(LatticeParser.COMPGRPContext context)
     {
-        var left = ListenerHelper.SharedListenerStack.Pop();
         var right = ListenerHelper.SharedListenerStack.Pop();
-        var compOp = context.OP_B_EQ()?.GetText() ?? context.OP_B_NEQ()?.GetText() ?? context.OP_GRT()?.GetText()
+        var left = ListenerHelper.SharedListenerStack.Pop();
+        
+        var compOp = context.compop().OP_B_EQ()?.GetText() ?? context.compop().OP_B_NEQ()?.GetText() ?? context.compop().OP_GRT()?.GetText()
             ?? throw new Exception("Invalid comparison operator");
 
-        var expression = new BooleanExpression($"{left} {compOp} {right}");
+        var expression = new BooleanExpression($"{left.value} {compOp} {right.value}");
         ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
 
     }
 
-    public override void ExitBoolop(LatticeParser.BoolopContext context)
+    public override void ExitBOOLOP(LatticeParser.BOOLOPContext context)
     {
         var left = PopBooleanExpressionFromStack();
         var right = PopBooleanExpressionFromStack();
-        var boolOp = context.OP_B_OR()?.GetText() ?? context.OP_B_AND()?.GetText()
-            ?? throw new Exception("Invalid comparison operator");
 
+        var boolOp = "";
+        if (context.boolop().OP_B_OR() != null)
+        {
+            boolOp = "or";
+        }
+
+        else if (context.boolop().OP_B_AND() != null)
+        {
+            boolOp = " and ";
+        }
+        else
+        {
+            throw new Exception($"Invalid boolean operator {context.GetText()}");
+        }
         var expression = new BooleanExpression($"{left} {boolOp} {right}");
         ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
-        
     }
 
     private BooleanExpression PopBooleanExpressionFromStack()

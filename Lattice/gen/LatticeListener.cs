@@ -377,6 +377,26 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIfblock([NotNull] LatticeParser.IfblockContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.ifheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfheader([NotNull] LatticeParser.IfheaderContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.ifheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfheader([NotNull] LatticeParser.IfheaderContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.elseblock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElseblock([NotNull] LatticeParser.ElseblockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.elseblock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElseblock([NotNull] LatticeParser.ElseblockContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -510,6 +530,16 @@ public interface ILatticeListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitWhileblock([NotNull] LatticeParser.WhileblockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.whileblockheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileblockheader([NotNull] LatticeParser.WhileblockheaderContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.whileblockheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileblockheader([NotNull] LatticeParser.WhileblockheaderContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.listparams"/>.
 	/// </summary>

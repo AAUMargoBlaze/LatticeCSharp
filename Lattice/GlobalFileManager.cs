@@ -43,7 +43,10 @@ public static class GlobalFileManager
 
     public static void Outdent()
     {
-        offsetCounter--;
+        if (0 < offsetCounter)
+        {
+            offsetCounter--;
+        }
     }
 
     private static string ApplyOffset(string text)
