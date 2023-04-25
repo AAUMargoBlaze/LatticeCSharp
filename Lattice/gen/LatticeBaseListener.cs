@@ -448,6 +448,30 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIfblock([NotNull] LatticeParser.IfblockContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.ifheader"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfheader([NotNull] LatticeParser.IfheaderContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.ifheader"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfheader([NotNull] LatticeParser.IfheaderContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.elseblock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElseblock([NotNull] LatticeParser.ElseblockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.elseblock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElseblock([NotNull] LatticeParser.ElseblockContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -605,6 +629,18 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitWhileblock([NotNull] LatticeParser.WhileblockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.whileblockheader"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileblockheader([NotNull] LatticeParser.WhileblockheaderContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.whileblockheader"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileblockheader([NotNull] LatticeParser.WhileblockheaderContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.listparams"/>.
 	/// <para>The default implementation does nothing.</para>

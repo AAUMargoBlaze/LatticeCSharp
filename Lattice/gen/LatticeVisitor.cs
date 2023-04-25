@@ -238,6 +238,18 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitIfblock([NotNull] LatticeParser.IfblockContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.ifheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfheader([NotNull] LatticeParser.IfheaderContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.elseblock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElseblock([NotNull] LatticeParser.ElseblockContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.outmostboolexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -316,6 +328,12 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitWhileblock([NotNull] LatticeParser.WhileblockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.whileblockheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileblockheader([NotNull] LatticeParser.WhileblockheaderContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.listparams"/>.
 	/// </summary>

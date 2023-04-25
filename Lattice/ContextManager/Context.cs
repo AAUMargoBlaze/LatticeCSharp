@@ -1,14 +1,14 @@
-using System.Collections;
 using Lattice.CommonElements;
-using Lattice.CommonElements.Relationships;
 
 namespace Lattice;
 
-public class Context : ICloneable
+public abstract class Context : ICloneable
 {
     private static bool _globalContextSet = false;
 
     private readonly bool _globalContext = false;
+    public readonly string Name;
+    
     public bool GlobalContext
     {
         get => _globalContext;
@@ -22,66 +22,21 @@ public class Context : ICloneable
             };
             _globalContext = value;
         }
-    }
-
-    public readonly string Name;
-
-    private Dictionary<string, Node> _nodes = new ();
-    private Dictionary<string, Relationship> _relationships = new ();
+    }    
+    
     private Dictionary<string, LatticeVariable> _variables = new ();
     private Dictionary<string, Context> _subContexts = new ();
-    
-    //todo add subcontexts
+
     public Context(string name)
     {
         Name = name;
     }
-
-    public void DeclareNode(string key, Node value)
-    {
-        _nodes.Remove(key); //node immutability
-        _nodes.Add(key, value);
-    }
-    
-    public Node GetNode(string key)
-    {
-        if (_nodes.TryGetValue(key, out var value))
-        {
-            return value;
-        }
-        throw new ArgumentException($"Node with name {key} never declared in context {Name}");
-    }
-    
-    public string DeclareRelationship(Relationship value)
-    {
-        string key = Guid.NewGuid().ToString();
-        DeclareRelationship(key, value);
-        return key;
-    }
-    
-    public void DeclareRelationship(string key, Relationship value)
-    {
-        if (_relationships.ContainsKey(key))
-        {
-            throw new ArgumentException($"Relationship with name {key} already declared in context {Name}");
-        }
-        _relationships.Add(key, value);
-    }
-    public Relationship GetRelationship(string key)
-    {
-        if (_relationships.TryGetValue(key, out var value))
-        {
-            return value;
-        }
-        throw new ArgumentException($"Relationship with name {key} never declared in context {Name}");
-    }
-
     
     public void DeclareVariable(string key, LatticeVariable value)
     {
         if (_variables.ContainsKey(key))
         {
-            throw new ArgumentException($"Variable with name {key} already declared in context {Name}");
+            throw new ArgumentException($"Variable with name {key} already declared in context");
         }
         _variables.Add(key, value);
     }
@@ -102,7 +57,7 @@ public class Context : ICloneable
         }
         else
         {
-            throw new ArgumentException($"Variable with name {key} never declared in context {Name}");
+            throw new ArgumentException($"Variable with name {key} never declared in context");
         }
     }
 
@@ -112,16 +67,16 @@ public class Context : ICloneable
         {
             return value;
         }
-        throw new ArgumentException($"Variable with name {key} never declared in context {Name}");
+        throw new ArgumentException($"Variable with name {key} never declared in context");
     }
 
-    public void DeclareContext(string key, Context subContext)
+    public void DeclareContext(string key, Context subGraphContext)
     {
         if (_subContexts.ContainsKey(key))
         {
-            throw new ArgumentException($"Subcontext with name {subContext.Name} already declared inside {Name}");
+            throw new ArgumentException($"Subcontext with name {subGraphContext.Name} already declared inside");
         }
-        _subContexts.Add(key, subContext);
+        _subContexts.Add(key, subGraphContext);
     }
 
     public Context GetSubContext(string key)
@@ -130,36 +85,29 @@ public class Context : ICloneable
         {
             return value;
         }
-        throw new ArgumentException($"Subcontext with name: {key} never declared inside {Name}");
-    }
-
-    public object Clone()
-    {
-        var newContext = new Context(Name) { GlobalContext = false };
-        IterateNodesToNewContext(newContext);
-        IterateRelationshipsToNewContext(newContext);
-        IterateVariablesToNewContext(newContext);
-        IterateSubContextsToNewContext(newContext);
-        return newContext;
+        throw new ArgumentException($"Subcontext with name: {key} never declared inside");
     }
     
-    private void IterateNodesToNewContext(Context newContext)
+    public object Clone()
     {
-        _nodes.ToList().ForEach(kvp => newContext.DeclareNode(kvp.Key, (Node)kvp.Value.Clone()));
+        throw new NotImplementedException();
     }
 
-    private void IterateRelationshipsToNewContext(Context newContext)
+    protected Context ContextClone(Context clone)
     {
-        _relationships.ToList().ForEach(kvp => newContext.DeclareRelationship(kvp.Key, (Relationship)kvp.Value.Clone()));
+        IterateVariablesToNewContext(clone);
+        IterateSubContextsToNewContext(clone);
+        return clone;
+    }
+    
+    private void IterateVariablesToNewContext(Context newGraphContext)
+    {
+        _variables.ToList().ForEach(kvp => newGraphContext.DeclareVariable(kvp.Key, (LatticeVariable)kvp.Value.Clone()));
     }
 
-    private void IterateVariablesToNewContext(Context newContext)
+    private void IterateSubContextsToNewContext(Context newGraphContext)
     {
-        _variables.ToList().ForEach(kvp => newContext.DeclareVariable(kvp.Key, (LatticeVariable)kvp.Value.Clone()));
+        _subContexts.ToList().ForEach(kvp => newGraphContext.DeclareContext(kvp.Key, (GraphContext)kvp.Value.Clone()));
     }
-
-    private void IterateSubContextsToNewContext(Context newContext)
-    {
-        _subContexts.ToList().ForEach(kvp => newContext.DeclareContext(kvp.Key, (Context)kvp.Value.Clone()));
-    }
+    
 }
