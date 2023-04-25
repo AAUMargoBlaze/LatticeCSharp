@@ -1,13 +1,14 @@
-using System.Collections;
 using Lattice.CommonElements;
 
 namespace Lattice;
 
-public class Context
+public abstract class Context : ICloneable
 {
     private static bool _globalContextSet = false;
 
     private readonly bool _globalContext = false;
+    public readonly string Name;
+    
     public bool GlobalContext
     {
         get => _globalContext;
@@ -21,24 +22,21 @@ public class Context
             };
             _globalContext = value;
         }
-    }
-
-    public readonly string Name;
+    }    
     
-    private Dictionary<string, Node> _nodes = new ();
-    private Dictionary<string, Relationship> _relationships = new ();
     private Dictionary<string, LatticeVariable> _variables = new ();
-    //todo add subcontexts
+    private Dictionary<string, Context> _subContexts = new ();
+
     public Context(string name)
     {
         Name = name;
     }
-
+    
     public void DeclareVariable(string key, LatticeVariable value)
     {
         if (_variables.ContainsKey(key))
         {
-            throw new ArgumentException($"Variable with name {key} already declared in context {Name}");
+            throw new ArgumentException($"Variable with name {key} already declared in context");
         }
         _variables.Add(key, value);
     }
@@ -59,7 +57,7 @@ public class Context
         }
         else
         {
-            throw new ArgumentException($"Variable with name {key} never declared in context {Name}");
+            throw new ArgumentException($"Variable with name {key} never declared in context");
         }
     }
 
@@ -69,6 +67,47 @@ public class Context
         {
             return value;
         }
-        throw new ArgumentException($"Variable with name {key} never declared in context {Name}");
+        throw new ArgumentException($"Variable with name {key} never declared in context");
     }
+
+    public void DeclareContext(string key, Context subGraphContext)
+    {
+        if (_subContexts.ContainsKey(key))
+        {
+            throw new ArgumentException($"Subcontext with name {subGraphContext.Name} already declared inside");
+        }
+        _subContexts.Add(key, subGraphContext);
+    }
+
+    public Context GetSubContext(string key)
+    {
+        if (_subContexts.TryGetValue(key, out var value))
+        {
+            return value;
+        }
+        throw new ArgumentException($"Subcontext with name: {key} never declared inside");
+    }
+    
+    public object Clone()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected Context ContextClone(Context clone)
+    {
+        IterateVariablesToNewContext(clone);
+        IterateSubContextsToNewContext(clone);
+        return clone;
+    }
+    
+    private void IterateVariablesToNewContext(Context newGraphContext)
+    {
+        _variables.ToList().ForEach(kvp => newGraphContext.DeclareVariable(kvp.Key, (LatticeVariable)kvp.Value.Clone()));
+    }
+
+    private void IterateSubContextsToNewContext(Context newGraphContext)
+    {
+        _subContexts.ToList().ForEach(kvp => newGraphContext.DeclareContext(kvp.Key, (GraphContext)kvp.Value.Clone()));
+    }
+    
 }

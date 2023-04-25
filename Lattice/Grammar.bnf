@@ -55,21 +55,29 @@
   ]
 }
 
-  Start        ::= Statements
-  Statements   ::= Statement Statements*
-  Statement    ::= VarDecl | GraphDecl | VarAssignOrGraphManip | PrintStatement
+ Start        ::= Statement*
+  Statement    ::= VarDeclorGraphDeclorFuncDef | VarAssignOrGraphManip | PrintStatement | IfBlock | WhileBlock | FuncCall;
+  VarDeclorGraphDeclorFuncDef ::= Type id(TailVarDecl | TailFuncDef ) | TYPE_GRAPH id (TailGraphManip |TailFuncDef)
   PrintStatement ::= OP_PRINT (id | string) SEMICOLON
-  VarDecl      ::= Type id VarDeclTail
-  VarDeclTail ::= TailVarAssign | SEMICOLON
-  GraphDecl    ::= TYPE_GRAPH id TailGraphManip;
+  TailVarDecl      ::= TailVarAssign | SEMICOLON
+  TailFuncDef ::= LEFT_PAREN [ListArgs] RIGHT_PAREN LEFT_BRACE Statement* ReturnStatement RIGHT_BRACE
+  ListArgs ::= Arg TailListArg
+  Arg ::= Type id
+  TailListArg ::= (COMMA Arg)*
+  ReturnStatement ::= OP_RETURN AssignVal SEMICOLON
   Type         ::= TYPE_STRING | TYPE_FLOAT | TYPE_BOOL | TYPE_INT | TYPE_GRAPH
-  VarAssignOrGraphManip ::= id TailVarAssignOrGraphManip
-  TailVarAssignOrGraphManip ::= TailVarAssign | TailGraphManip
+  VarAssignOrGraphManip ::= id (TailVarAssign | TailGraphManip)
   TailVarAssign  ::= OP_ASSIGN AssignVal SEMICOLON
-  AssignVal ::= number | string
+  AssignVal ::= Exp | number | string | id | FuncCall | KEYWORD_FMAP id id
   TailGraphManip   ::= LEFT_BRACE ListGraphOp RIGHT_BRACE
-  ListGraphOp  ::= GraphOp ListGraphOp*
-  GraphOp      ::= AddRel | AddClone | AddRef
+  ListGraphOp  ::= GraphOp*
+  GraphOp      ::= AddRel | AddClone | AddRef | Type id TailVarDecl
   AddRef       ::= OP_REF id SEMICOLON
   AddClone     ::= OP_CLONE id SEMICOLON
-  AddRel       ::= id OP_REL_LEFT number COMMA string OP_REL_RIGHT id
+  AddRel       ::= id OP_REL_LEFT string COMMA number OP_REL_RIGHT id SEMICOLON
+  IfBlock ::= KEYWORD_IF LEFT_PAREN BoolExpr RIGHT_PAREN LEFT_BRACE Statement* RIGHT_BRACE [KEYWORD_ELSE LEFT_BRACE Statement* RIGHT_BRACE ]
+  BoolExpr ::= KEYWORD_TRUE|KEYWORD_FALSE|Comp|FuncCall|id
+  Comp ::= AssignVal CompOp AssignVal
+  CompOp ::= OP_B_AND | OP_B_EQ | OP_B_OR | OP_B_NEQ | OP_GRT
+  FuncCall ::= id LEFT_PAREN [ListArgs] RIGHT_PAREN
+  WhileBlock ::= KEYWORD_WHILE LEFT_PAREN BoolExpr RIGHT_PAREN LEFT_BRACE Statement* RIGHT_BRACE

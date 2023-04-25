@@ -2,7 +2,9 @@ namespace Lattice;
 
 public static class GlobalFileManager
 {
-    private static string? path = null;
+    private static string? _path = null;
+    private static bool _startedANewLine = false;
+    private static int offsetCounter = 0;
 
     public static void Initialize(string filename)
     {
@@ -10,21 +12,48 @@ public static class GlobalFileManager
         {
             filename = NormalizeOutFileName(filename);
             File.Create(filename).Close();
-            path = filename;
+            _path = filename;
         }
         catch (IOException e)
         {
             Console.WriteLine($"Error generating python target file: {e.Message} Defaulting to Stdout");
         }
     }
+
     public static void Write(string outString)
     {
-        if(path == null) 
+
+        if (_startedANewLine)
+        {
+            outString = ApplyOffset(outString);
+        }
+        
+        if (_path == null)
             WriteToStdout(outString);
         else
             WriteToPyFile(outString);
+        
+        _startedANewLine = outString.EndsWith(Program.NewLine);
     }
-    
+
+    public static void Indent()
+    {
+        offsetCounter++;
+    }
+
+    public static void Outdent()
+    {
+        if (0 < offsetCounter)
+        {
+            offsetCounter--;
+        }
+    }
+
+    private static string ApplyOffset(string text)
+    {
+        return new string('\t', offsetCounter)+text;
+    }
+
     private static void WriteToStdout(string outString)
     {
         Console.Write(outString);
@@ -32,10 +61,8 @@ public static class GlobalFileManager
 
     private static void WriteToPyFile(string outString)
     {
-        using (var streamWriter = File.AppendText(path))
-        {
-            streamWriter.Write(outString);
-        }
+        using var streamWriter = File.AppendText(_path!);
+        streamWriter.Write(outString);
     }
     private static string NormalizeOutFileName(string filename)
     {
