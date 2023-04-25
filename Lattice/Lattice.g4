@@ -60,7 +60,8 @@ expr : OP_SUB expr     # UMINUS
 number : INTEGER | FLOAT_LIT; 
 addop : OP_ADD | OP_SUB ; 
 mulop : OP_MULT | OP_DIV | OP_REM ;
-ifblock : KEYWORD_IF LEFT_PAREN outmostboolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE (KEYWORD_ELSE LEFT_BRACE statement* RIGHT_BRACE)?; 
+ifblock : KEYWORD_IF LEFT_PAREN outmostboolexpr RIGHT_PAREN LEFT_BRACE statement* RIGHT_BRACE ()?;
+elseblock: KEYWORD_ELSE LEFT_BRACE statement* RIGHT_BRACE;
 outmostboolexpr : boolexpr; 
 boolexpr : OP_B_NOT boolexpr #NOT 
             | boolexpr boolop boolexpr #BOOLOP

@@ -17,7 +17,7 @@ public class GraphListener : LatticeBaseListener
         //This may happen in the EnterTailgraphmanip
         //In this situation the context is put on the stack, so it's not created twice.
         var valueTuple = ListenerHelper.SharedListenerStack.Peek();
-        if (valueTuple.type == typeof(Context) && ((Context)valueTuple.value).Name == id)
+        if (valueTuple.type == typeof(GraphContext) && ((GraphContext)valueTuple.value).Name == id)
         {
             ListenerHelper.SharedListenerStack.Pop();
         }
@@ -38,7 +38,7 @@ public class GraphListener : LatticeBaseListener
             OpenNewContext(id);
             
             var currentGraphContext = ContextManager.GetCurrentContext();
-            ListenerHelper.SharedListenerStack.Push((currentGraphContext, typeof(Context)));
+            ListenerHelper.SharedListenerStack.Push((currentGraphContext, typeof(GraphContext)));
         }
         else if (granny is LatticeParser.VarassignorgraphmanipContext)
         {
@@ -54,7 +54,7 @@ public class GraphListener : LatticeBaseListener
 
     public override void ExitAddref(LatticeParser.AddrefContext context)
     {
-        var currentGraphContext = ContextManager.GetCurrentContext();
+        var currentGraphContext = ContextManager.GetCurrentGraphContext();
         var id = context.ID().GetText();
         var ltVar = currentGraphContext.GetVariable(id);
 
@@ -71,7 +71,7 @@ public class GraphListener : LatticeBaseListener
     public override void ExitAddrel(LatticeParser.AddrelContext context)
     {
         var ids = context.ID();
-        var currentGraph = ContextManager.GetCurrentContext();
+        var currentGraph = ContextManager.GetCurrentGraphContext();
         GlobalFileManager.Write($"{currentGraph.Name}.add_edge(");
 
         var predecessor = currentGraph.GetNode(ids[0].GetText());
@@ -92,14 +92,15 @@ public class GraphListener : LatticeBaseListener
             Cost = cost,
             Label = label
         };
-        ContextManager.GetCurrentContext().DeclareRelationship(relationship);
+        ContextManager.GetCurrentGraphContext().DeclareRelationship(relationship);
 
         GlobalFileManager.Write($")) {Program.NewLine}");
     }
 
     private void OpenNewContext(string id)
     {
-        ContextManager.OpenNewSubContext(id);
+        var newContext = new GraphContext(id);
+        ContextManager.OpenNewSubContext(newContext);
         GlobalFileManager.Write($"{id} = Graph() {Program.NewLine}");
     }
 }

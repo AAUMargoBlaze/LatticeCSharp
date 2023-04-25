@@ -26,7 +26,7 @@ public class CustomLatticeLexer : LatticeLexer
         {
             var token = base.Emit();
             var tokenText = Text;
-
+            
             return token;
         }
     }

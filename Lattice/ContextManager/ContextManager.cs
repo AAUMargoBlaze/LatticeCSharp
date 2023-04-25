@@ -2,18 +2,32 @@ namespace Lattice;
 
 public static class ContextManager
 {
-    private static readonly Stack<Context> ContextStack = new Stack<Context>(new []{  new Context("Global") { GlobalContext = true } });
+    private static readonly Stack<Context> ContextStack = new Stack<Context>(new []{  new GraphContext("Global") { GlobalContext = true } });
 
     public static Context GetCurrentContext()
     {
         return ContextStack.Peek();
     }
-    public static Context OpenNewSubContext(string name)
+
+    public static GraphContext GetCurrentGraphContext()
     {
-        var newContext = new Context(name);
-        GetCurrentContext().DeclareContext(name, newContext);
-        ContextStack.Push(newContext);
+        var stackCopy = new Stack<Context>(ContextStack.Reverse());
+        Context found = null;
         
+        while (found == null)
+        {
+            var investigated = stackCopy.Pop();
+            if (investigated is GraphContext)
+            {
+                found = investigated;
+            }
+        }
+        return (GraphContext)found;
+    }
+    public static Context OpenNewSubContext(Context newContext)
+    {
+        ContextStack.Push(newContext);
+        GetCurrentContext().DeclareContext(newContext.Name, newContext);
         return GetCurrentContext();
     }
 
@@ -33,3 +47,4 @@ public static class ContextManager
         
     }
 }
+
