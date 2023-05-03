@@ -7,8 +7,9 @@ public class ExpressionListener : LatticeBaseListener
     public override void ExitIDCASE(LatticeParser.IDCASEContext context)
     {
         var id = context.ID().GetText();
-        var expression = new ClassicalExpression(id);
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(ClassicalExpression)));
+        var variable = ContextManager.GetCurrentContext().GetVariable(id);
+        var expression = new LatticeExpression(id, variable.Type);
+        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
 
     }
 }

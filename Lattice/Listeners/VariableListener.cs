@@ -1,4 +1,5 @@
 using Lattice.CommonElements;
+using Lattice.CommonElements.Expressions;
 
 namespace Lattice.Listeners;
 
@@ -61,7 +62,7 @@ public class VariableListener : LatticeBaseListener
         //bool handled in BooleanListener
     }
 
-    private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, (object value, Type type) valueTuple)
+    private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, LatticeExpression valueTuple)
     {
         targetVar.Value = Convert.ChangeType(valueTuple.value, valueTuple.type);
         GlobalFileManager.Write($"{targetVar.Id} = {targetVar.Value} {Program.NewLine}");

@@ -19,15 +19,15 @@ public class BooleanListener : LatticeBaseListener
     public override void ExitNOT(LatticeParser.NOTContext context)
     {
         var expression = PopBooleanExpressionFromStack();
-        expression = new BooleanExpression($"not {expression}");
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
+        expression = new LatticeExpression($"not {expression}", LatticeType.Bool);
+        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
     }
 
     public override void ExitPARENGRPBOOL(LatticeParser.PARENGRPBOOLContext context)
     {
         var expression = PopBooleanExpressionFromStack();
-        expression = new BooleanExpression($"({expression})");
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
+        expression = new LatticeExpression($"({expression})", LatticeType.Bool);
+        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
     }
 
     public override void ExitIDBOOL(LatticeParser.IDBOOLContext context)
@@ -40,7 +40,7 @@ public class BooleanListener : LatticeBaseListener
         if (ltVar.Type == LatticeType.Bool)
         {
             var expression = ltVar.Id;
-            ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
+            ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
         }
         else
         {
@@ -57,8 +57,18 @@ public class BooleanListener : LatticeBaseListener
         var compOp = context.compop().OP_B_EQ()?.GetText() ?? context.compop().OP_B_NEQ()?.GetText() ?? context.compop().OP_GRT()?.GetText()
             ?? throw new Exception("Invalid comparison operator");
 
-        var expression = new BooleanExpression($"{left.value} {compOp} {right.value}");
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
+        //type check
+        if (right.type == left.type)
+        {
+            
+        }
+        else
+        {
+            throw new Exception("Type mismatch in comparison operator");
+        }
+
+            var expression = new LatticeExpression($"{left.value} {compOp} {right.value}", LatticeType.Bool);
+        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
 
     }
 
@@ -81,21 +91,25 @@ public class BooleanListener : LatticeBaseListener
         {
             throw new Exception($"Invalid boolean operator {context.GetText()}");
         }
-        var expression = new BooleanExpression($"{left} {boolOp} {right}");
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(BooleanExpression)));
+        var expression = new LatticeExpression($"{left} {boolOp} {right}", LatticeType.Bool);
+        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
     }
 
-    private BooleanExpression PopBooleanExpressionFromStack()
+    private LatticeExpression PopBooleanExpressionFromStack()
     {
         if (!ListenerHelper.SharedListenerStack.TryPeek(out var valueTuple)) return null;
         if (valueTuple.type == typeof(bool))
         {
             ListenerHelper.SharedListenerStack.Pop();
-            return new BooleanExpression(valueTuple.value.ToString());
+            return new LatticeExpression(valueTuple.value.ToString(), LatticeType.Bool);
         }
-        if (valueTuple.type == typeof(BooleanExpression))
+
+        if (valueTuple.type != typeof(LatticeExpression))
+            throw new Exception("Invalid boolean expression");
+        var expression = (LatticeExpression)ListenerHelper.SharedListenerStack.Pop().value;
+        if (expression.EvaluationType == LatticeType.Bool)
         {
-            return (BooleanExpression)ListenerHelper.SharedListenerStack.Pop().value;
+            return expression;
         }
         throw new Exception("Invalid boolean expression");
     }

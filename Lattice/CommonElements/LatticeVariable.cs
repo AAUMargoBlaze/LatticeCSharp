@@ -21,9 +21,8 @@ public class LatticeVariable : ICloneable
                     (newValueType == typeof(int) && Type == LatticeType.Int) ||
                     (newValueType == typeof(float) && Type == LatticeType.Float) ||
                     (newValueType == typeof(double) && Type == LatticeType.Float) ||
-                    (newValueType == typeof(bool) && Type == LatticeType.Bool) ||
-                    (newValueType == typeof(BooleanExpression) && Type == LatticeType.Bool)
-            )
+                    (newValueType == typeof(bool) && Type == LatticeType.Bool)
+                    )
             {
                 _value = value;
             }
