@@ -41,14 +41,14 @@ public class VariableListener : LatticeBaseListener
         var temp = context.number()?.INTEGER()?.GetText();
         if (temp != null)
         {
-            ListenerHelper.SharedListenerStack.Push((temp, typeof(int)));
+            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(temp, LatticeType.Int));
             return;
         }
         
         temp = context.number()?.FLOAT_LIT()?.GetText();
         if (temp != null)
         {
-            ListenerHelper.SharedListenerStack.Push((temp, typeof(float)));
+            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(temp, LatticeType.Float));
             return;
         }
         
@@ -56,15 +56,15 @@ public class VariableListener : LatticeBaseListener
         
         if (temp != null)
         {
-            ListenerHelper.SharedListenerStack.Push((temp, typeof(string)));
+            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(temp, LatticeType.Str));
             return;
         }
         //bool handled in BooleanListener
     }
 
-    private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, LatticeExpression valueTuple)
+    private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, LatticeExpression expression)
     {
-        targetVar.Value = Convert.ChangeType(valueTuple.value, valueTuple.type);
+        targetVar.Value = expression.ReturnExpressionInNativeType();
         GlobalFileManager.Write($"{targetVar.Id} = {targetVar.Value} {Program.NewLine}");
     }
 }

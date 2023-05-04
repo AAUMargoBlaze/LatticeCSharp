@@ -9,7 +9,7 @@ public class ExpressionListener : LatticeBaseListener
         var id = context.ID().GetText();
         var variable = ContextManager.GetCurrentContext().GetVariable(id);
         var expression = new LatticeExpression(id, variable.Type);
-        ListenerHelper.SharedListenerStack.Push((expression, typeof(LatticeExpression)));
+        ListenerHelper.SharedListenerStack.Push(expression);
 
     }
 }

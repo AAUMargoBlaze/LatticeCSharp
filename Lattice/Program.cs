@@ -14,7 +14,7 @@ namespace Lattice
         {
             string sourceFile = args[0];
             string outFile = args[1];
-            //GlobalFileManager.Initialize(outFile);
+            GlobalFileManager.Initialize(outFile);
 
             string fileContents = File.ReadAllText(sourceFile);
             var inputStream = new CodePointCharStream(fileContents);

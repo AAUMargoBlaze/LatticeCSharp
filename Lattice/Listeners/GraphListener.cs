@@ -1,4 +1,5 @@
 using Lattice.CommonElements;
+using Lattice.CommonElements.Expressions;
 using Lattice.CommonElements.Relationships;
 
 namespace Lattice.Listeners;
@@ -16,8 +17,8 @@ public class GraphListener : LatticeBaseListener
         //Because of how enter and exit works, a context may have already been created before the exit has been reached
         //This may happen in the EnterTailgraphmanip
         //In this situation the context is put on the stack, so it's not created twice.
-        var valueTuple = ListenerHelper.SharedListenerStack.Peek();
-        if (valueTuple.type == typeof(GraphContext) && ((GraphContext)valueTuple.value).Name == id)
+        var graphContext = ListenerHelper.SharedListenerStack.Peek();
+        if (graphContext.EvaluationType == LatticeType.Graph && graphContext.ToString() == id)
         {
             ListenerHelper.SharedListenerStack.Pop();
         }
@@ -38,7 +39,7 @@ public class GraphListener : LatticeBaseListener
             OpenNewContext(id);
             
             var currentGraphContext = ContextManager.GetCurrentContext();
-            ListenerHelper.SharedListenerStack.Push((currentGraphContext, typeof(GraphContext)));
+            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(currentGraphContext.Name, LatticeType.Graph));
         }
         else if (granny is LatticeParser.VarassignorgraphmanipContext)
         {

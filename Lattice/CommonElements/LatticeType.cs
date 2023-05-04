@@ -26,7 +26,7 @@ public class LatticeTypeHelper
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
-    
+
 }
 public enum LatticeType
 {
