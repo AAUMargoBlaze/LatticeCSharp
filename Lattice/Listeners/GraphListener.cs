@@ -1,10 +1,12 @@
 using Lattice.CommonElements;
+using Lattice.CommonElements.Expressions;
 using Lattice.CommonElements.Relationships;
 
 namespace Lattice.Listeners;
 
 public class GraphListener : LatticeBaseListener
 {
+    
     public override void ExitVardecl(LatticeParser.VardeclContext context)
     {
         var type = LatticeTypeHelper.StringToLatticeType(context.type().GetText());
@@ -16,8 +18,8 @@ public class GraphListener : LatticeBaseListener
         //Because of how enter and exit works, a context may have already been created before the exit has been reached
         //This may happen in the EnterTailgraphmanip
         //In this situation the context is put on the stack, so it's not created twice.
-        var valueTuple = ListenerHelper.SharedListenerStack.Peek();
-        if (valueTuple.type == typeof(GraphContext) && ((GraphContext)valueTuple.value).Name == id)
+        var graphContext = ListenerHelper.SharedListenerStack.Peek();
+        if (graphContext.EvaluationType == LatticeType.Graph && graphContext.ToString() == id)
         {
             ListenerHelper.SharedListenerStack.Pop();
         }
@@ -26,6 +28,7 @@ public class GraphListener : LatticeBaseListener
             OpenNewContext(id);
         }
     }
+
 
     public override void EnterTailgraphmanip(LatticeParser.TailgraphmanipContext context)
     {
@@ -38,11 +41,11 @@ public class GraphListener : LatticeBaseListener
             OpenNewContext(id);
             
             var currentGraphContext = ContextManager.GetCurrentContext();
-            ListenerHelper.SharedListenerStack.Push((currentGraphContext, typeof(GraphContext)));
+            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(currentGraphContext.Name, LatticeType.Graph));
         }
-        else if (granny is LatticeParser.VarassignorgraphmanipContext)
+        else if (granny is LatticeParser.VarassignorgraphmaniporaddrelContext)
         {
-            var id = ((LatticeParser.VarassignorgraphmanipContext)granny).ID().GetText();
+            var id = ((LatticeParser.VarassignorgraphmaniporaddrelContext)granny).ID().GetText();
             ContextManager.EnterSubContext(id);
         }
     }
@@ -68,16 +71,17 @@ public class GraphListener : LatticeBaseListener
         GlobalFileManager.Write(Program.NewLine);
     }
 
-    public override void ExitAddrel(LatticeParser.AddrelContext context)
+    public override void ExitTailaddrel(LatticeParser.TailaddrelContext context)
     {
+        var parentContext = (LatticeParser.VarassignorgraphmaniporaddrelContext)context.Parent;
         var ids = context.ID();
         var currentGraph = ContextManager.GetCurrentGraphContext();
         GlobalFileManager.Write($"{currentGraph.Name}.add_edge(");
 
-        var predecessor = currentGraph.GetNode(ids[0].GetText());
+        var predecessor = currentGraph.GetNode(parentContext.ID().GetText());
         GlobalFileManager.Write($"{currentGraph.Name}.get_node('{predecessor.Id}'), ");
         
-        var successor = currentGraph.GetNode(ids[1].GetText());
+        var successor = currentGraph.GetNode(context.ID().GetText());
         GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}'), ");
         
         var cost = Convert.ToInt32(context.number().GetText());

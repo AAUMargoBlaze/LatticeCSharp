@@ -41,7 +41,7 @@ public abstract class Context : ICloneable
         _variables.Add(key, value);
     }
 
-    public void AssignValueToVariable<T>(string key, T newValue)
+    public void AssignValueToVariable<T>(string key, string newValue)
     {
         if (_variables.TryGetValue(key, out var oldValue))
         {
@@ -109,5 +109,10 @@ public abstract class Context : ICloneable
     {
         _subContexts.ToList().ForEach(kvp => newGraphContext.DeclareContext(kvp.Key, (GraphContext)kvp.Value.Clone()));
     }
-    
+
+    public Dictionary<string, LatticeVariable>  ReturnAllDeclaredVariables()
+    {
+        return _variables;
+    }
+
 }

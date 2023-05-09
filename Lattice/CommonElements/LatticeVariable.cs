@@ -9,30 +9,11 @@ public class LatticeVariable : ICloneable
     public readonly string Id;
 
 
-    private dynamic _value;
-    public dynamic Value
+    private string _value;
+    public string Value
     {
         get => _value;
-        set
-        {
-            var newValueType = value.GetType();
-            if (
-                    (newValueType == typeof(string) && Type == LatticeType.Str) ||
-                    (newValueType == typeof(int) && Type == LatticeType.Int) ||
-                    (newValueType == typeof(float) && Type == LatticeType.Float) ||
-                    (newValueType == typeof(double) && Type == LatticeType.Float) ||
-                    (newValueType == typeof(bool) && Type == LatticeType.Bool) ||
-                    (newValueType == typeof(BooleanExpression) && Type == LatticeType.Bool)
-            )
-            {
-                _value = value;
-            }
-            else
-            {
-                throw new InvalidCastException($"Can't convert from {newValueType} to {Type}");
-            }
-        }
-
+        set => _value = value;
     }
 
     public LatticeVariable(string id, LatticeType type)

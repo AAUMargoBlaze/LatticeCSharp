@@ -11,14 +11,18 @@ options {
 start :(statement| funcdef)*;
 statement 
     : vardecl 
-    | varassignorgraphmanip
+    | varassignorgraphmaniporaddrel
     | printstatement
     | ifblock
     |whileblock
     |funccall SEMICOLON /*depends on the role we want functions/methods to have */
     | returnstatement
+    | addclone
+    | addref
+    | outmostexpr
+    | boolexpr
     ;
-funcdef : OP_DEF type ID LEFT_PAREN (listargs)? RIGHT_PAREN LEFT_BRACE statement*  RIGHT_BRACE; 
+funcdef : KEYWORD_DEF type ID LEFT_PAREN (listargs)? RIGHT_PAREN LEFT_BRACE statement*  RIGHT_BRACE; 
 returnstatement :  OP_RETURN assignval SEMICOLON;
 listargs : arg taillistarg; 
 arg : type ID; 
@@ -33,21 +37,16 @@ type
     | TYPE_INT
     | TYPE_GRAPH
     ; 
-varassignorgraphmanip : ID tailvarassignorgraphmanip; 
+varassignorgraphmaniporaddrel : ID (tailvarassignorgraphmanip | tailaddrel); 
 tailvarassignorgraphmanip : tailvarassign | tailgraphmanip; 
 tailvarassign : OP_ASSIGN assignval SEMICOLON; 
-assignval : STRING | number | expr | boolval; 
+assignval : outmostexpr | outmostboolexpr; 
 boolval :KEYWORD_TRUE | KEYWORD_FALSE; 
-tailgraphmanip : LEFT_BRACE graphop* RIGHT_BRACE;
-graphop  
-    : addrel
-    | addclone
-    | addref
-    | vardecl
-    ;
+tailgraphmanip : LEFT_BRACE statement* RIGHT_BRACE;
 addref : OP_REF ID SEMICOLON; 
 addclone : OP_CLONE ID SEMICOLON; 
-addrel : ID OP_REL_LEFT number COMMA STRING OP_REL_RIGHT ID; 
+tailaddrel : OP_REL_LEFT number COMMA STRING OP_REL_RIGHT ID; 
+outmostexpr: expr;
 expr : OP_SUB expr     # UMINUS 
    | expr mulop expr # MULOPGRP
    | expr addop expr # ADDOPGRP
@@ -56,6 +55,7 @@ expr : OP_SUB expr     # UMINUS
    | ID # IDCASE
    | funccall #FUNCTIONCALL
    | KEYWORD_FMAP ID ID # FUNCTIONMAPPING
+   | STRING #STRINGEXPR
    ;
 number : INTEGER | FLOAT_LIT; 
 addop : OP_ADD | OP_SUB ; 
@@ -66,7 +66,8 @@ elseblock: KEYWORD_ELSE LEFT_BRACE statement* RIGHT_BRACE;
 outmostboolexpr : boolexpr; 
 boolexpr : OP_B_NOT boolexpr #NOT 
             | boolexpr boolop boolexpr #BOOLOP
-            | assignval compop assignval #COMPGRP
+            | boolexpr compop boolexpr #BOOLEXPRCOMPGRP
+            | expr compop expr #EXPRCOMPGRP
             | LEFT_PAREN boolexpr RIGHT_PAREN # PARENGRPBOOL
             | ID #IDBOOL
             | funccall #FUNCCALL
@@ -76,7 +77,7 @@ boolop :OP_B_AND | OP_B_OR;
 compop :  OP_B_EQ | OP_B_NEQ | OP_GRT; 
 funccall : ID LEFT_PAREN (listparams)? RIGHT_PAREN; 
 whileblock : whileblockheader LEFT_BRACE statement* RIGHT_BRACE; /*add break and continue ? */
-whileblockheader : KEYWORD_WHILE LEFT_PAREN outmostboolexpr RIGHT_PAREN;
+whileblockheader: KEYWORD_WHILE LEFT_PAREN outmostboolexpr RIGHT_PAREN;
 listparams : param taillistparams;
 param : ID;
 taillistparams : (COMMA param)*;
@@ -132,7 +133,7 @@ OP_REF : 'ref';
 OP_CLONE : 'clone';
 OP_RETURN : 'return';
 OP_PRINT : 'print';
-OP_DEF : 'def';
+KEYWORD_DEF : 'def';
 TYPE_INT : 'int';
 TYPE_FLOAT : 'float';
 TYPE_STRING : 'str';

@@ -19,14 +19,14 @@ public class LatticeTypeHelper
     {
         return type switch
         {
-            LatticeType.Int => default(int),
+            LatticeType.Int => default(int).ToString(),
             LatticeType.Str => "",
-            LatticeType.Float => default(float),
-            LatticeType.Bool => default(bool),
+            LatticeType.Float => default(float).ToString(),
+            LatticeType.Bool => default(bool).ToString(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
-    
+
 }
 public enum LatticeType
 {

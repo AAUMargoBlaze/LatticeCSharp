@@ -98,11 +98,11 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] LatticeParser.TypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context);
+	Result VisitVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.tailvarassignorgraphmanip"/>.
 	/// </summary>
@@ -134,12 +134,6 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitGraphop([NotNull] LatticeParser.GraphopContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.addref"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -152,11 +146,17 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAddclone([NotNull] LatticeParser.AddcloneContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAddrel([NotNull] LatticeParser.AddrelContext context);
+	Result VisitTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOutmostexpr([NotNull] LatticeParser.OutmostexprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -171,6 +171,13 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIDCASE([NotNull] LatticeParser.IDCASEContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>FUNCTIONCALL</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -263,6 +270,13 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBOOLVAL([NotNull] LatticeParser.BOOLVALContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>NOT</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
@@ -277,19 +291,19 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitPARENGRPBOOL([NotNull] LatticeParser.PARENGRPBOOLContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCOMPGRP([NotNull] LatticeParser.COMPGRPContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BOOLOP</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBOOLOP([NotNull] LatticeParser.BOOLOPContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IDBOOL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.

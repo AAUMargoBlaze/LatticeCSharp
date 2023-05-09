@@ -21,8 +21,6 @@ namespace Lattice
             var latticeLexer = new CustomLatticeLexer(inputStream);
             var commonTokenStream = new CommonTokenStream(latticeLexer);
             var latticeParser = new LatticeParser(commonTokenStream);
-
-
             
             latticeParser.AddParseListener(new StdLibListener(commonTokenStream));
             latticeParser.AddParseListener(new VariableListener());

@@ -145,7 +145,7 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitType([NotNull] LatticeParser.TypeContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -153,7 +153,7 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context) { return VisitChildren(context); }
+	public virtual Result VisitVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.tailvarassignorgraphmanip"/>.
 	/// <para>
@@ -205,16 +205,6 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitGraphop([NotNull] LatticeParser.GraphopContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.addref"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -235,7 +225,7 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitAddclone([NotNull] LatticeParser.AddcloneContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -243,7 +233,17 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAddrel([NotNull] LatticeParser.AddrelContext context) { return VisitChildren(context); }
+	public virtual Result VisitTailaddrel([NotNull] LatticeParser.TailaddrelContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitOutmostexpr([NotNull] LatticeParser.OutmostexprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -266,6 +266,17 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitIDCASE([NotNull] LatticeParser.IDCASEContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>FUNCTIONCALL</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -414,6 +425,17 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBOOLVAL([NotNull] LatticeParser.BOOLVALContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>NOT</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// <para>
@@ -436,17 +458,6 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	public virtual Result VisitPARENGRPBOOL([NotNull] LatticeParser.PARENGRPBOOLContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitCOMPGRP([NotNull] LatticeParser.COMPGRPContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BOOLOP</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// <para>
@@ -457,6 +468,17 @@ public partial class LatticeBaseVisitor<Result> : AbstractParseTreeVisitor<Resul
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBOOLOP([NotNull] LatticeParser.BOOLOPContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IDBOOL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.

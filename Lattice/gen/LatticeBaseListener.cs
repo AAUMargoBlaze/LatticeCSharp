@@ -168,17 +168,17 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitType([NotNull] LatticeParser.TypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Enter a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context) { }
+	public virtual void EnterVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Exit a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context) { }
+	public virtual void ExitVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.tailvarassignorgraphmanip"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -240,18 +240,6 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGraphop([NotNull] LatticeParser.GraphopContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGraphop([NotNull] LatticeParser.GraphopContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.addref"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -276,17 +264,29 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAddclone([NotNull] LatticeParser.AddcloneContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Enter a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAddrel([NotNull] LatticeParser.AddrelContext context) { }
+	public virtual void EnterTailaddrel([NotNull] LatticeParser.TailaddrelContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Exit a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAddrel([NotNull] LatticeParser.AddrelContext context) { }
+	public virtual void ExitTailaddrel([NotNull] LatticeParser.TailaddrelContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutmostexpr([NotNull] LatticeParser.OutmostexprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutmostexpr([NotNull] LatticeParser.OutmostexprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -315,6 +315,20 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIDCASE([NotNull] LatticeParser.IDCASEContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>FUNCTIONCALL</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -498,6 +512,20 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBOOLVAL([NotNull] LatticeParser.BOOLVALContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>NOT</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -526,20 +554,6 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPARENGRPBOOL([NotNull] LatticeParser.PARENGRPBOOLContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCOMPGRP([NotNull] LatticeParser.COMPGRPContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCOMPGRP([NotNull] LatticeParser.COMPGRPContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>BOOLOP</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -553,6 +567,20 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBOOLOP([NotNull] LatticeParser.BOOLOPContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IDBOOL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
