@@ -231,6 +231,16 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutmostexpr([NotNull] LatticeParser.OutmostexprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutmostexpr([NotNull] LatticeParser.OutmostexprContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
 	/// </summary>
@@ -254,6 +264,18 @@ public interface ILatticeListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIDCASE([NotNull] LatticeParser.IDCASEContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>FUNCTIONCALL</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -409,6 +431,18 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBOOLVAL([NotNull] LatticeParser.BOOLVALContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>NOT</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
@@ -433,18 +467,6 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPARENGRPBOOL([NotNull] LatticeParser.PARENGRPBOOLContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCOMPGRP([NotNull] LatticeParser.COMPGRPContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCOMPGRP([NotNull] LatticeParser.COMPGRPContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>BOOLOP</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
@@ -456,6 +478,18 @@ public interface ILatticeListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBOOLOP([NotNull] LatticeParser.BOOLOPContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IDBOOL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.

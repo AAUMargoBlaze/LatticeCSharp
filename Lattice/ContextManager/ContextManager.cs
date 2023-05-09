@@ -26,6 +26,7 @@ public static class ContextManager
     }
     public static Context OpenNewSubContext(Context newContext)
     {
+        PushDownVariablesToSubContext(ref newContext);
         ContextStack.Push(newContext);
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
         return GetCurrentContext();
@@ -45,6 +46,15 @@ public static class ContextManager
         }
         return ContextStack.Pop();
         
+    }
+
+    private static void PushDownVariablesToSubContext(ref Context newContext)
+    {
+        var parentVars = GetCurrentContext().ReturnAllDeclaredVariables();
+        foreach (var kvp in parentVars)
+        {
+            newContext.DeclareVariable(kvp.Key, kvp.Value);
+        }
     }
 }
 

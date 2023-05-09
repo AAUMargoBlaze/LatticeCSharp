@@ -152,6 +152,12 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.outmostexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOutmostexpr([NotNull] LatticeParser.OutmostexprContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
 	/// </summary>
@@ -165,6 +171,13 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIDCASE([NotNull] LatticeParser.IDCASEContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>STRINGEXPR</c>
+	/// labeled alternative in <see cref="LatticeParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSTRINGEXPR([NotNull] LatticeParser.STRINGEXPRContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>FUNCTIONCALL</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
@@ -257,6 +270,13 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBOOLVAL([NotNull] LatticeParser.BOOLVALContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>BOOLEXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBOOLEXPRCOMPGRP([NotNull] LatticeParser.BOOLEXPRCOMPGRPContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>NOT</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
@@ -271,19 +291,19 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitPARENGRPBOOL([NotNull] LatticeParser.PARENGRPBOOLContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>COMPGRP</c>
-	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCOMPGRP([NotNull] LatticeParser.COMPGRPContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BOOLOP</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBOOLOP([NotNull] LatticeParser.BOOLOPContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>EXPRCOMPGRP</c>
+	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEXPRCOMPGRP([NotNull] LatticeParser.EXPRCOMPGRPContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IDBOOL</c>
 	/// labeled alternative in <see cref="LatticeParser.boolexpr"/>.

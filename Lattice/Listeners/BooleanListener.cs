@@ -13,7 +13,11 @@ public class BooleanListener : LatticeBaseListener
 
     public override void ExitOutmostboolexpr(LatticeParser.OutmostboolexprContext context)
     {
-        GlobalFileManager.Write(PopBooleanExpressionFromStack().ToString());
+        if (!(context.Parent is LatticeParser.AssignvalContext))
+        {
+            //we don't want to dump it if it's not a var assign
+            GlobalFileManager.Write(PopBooleanExpressionFromStack().ToString());
+        }
     }
 
     public override void ExitNOT(LatticeParser.NOTContext context)
@@ -48,7 +52,7 @@ public class BooleanListener : LatticeBaseListener
 
     }
 
-    public override void ExitCOMPGRP(LatticeParser.COMPGRPContext context)
+    public override void ExitEXPRCOMPGRP(LatticeParser.EXPRCOMPGRPContext context)
     {
         var right = ListenerHelper.SharedListenerStack.Pop();
         var left = ListenerHelper.SharedListenerStack.Pop();
@@ -56,19 +60,31 @@ public class BooleanListener : LatticeBaseListener
         var compOp = context.compop().OP_B_EQ()?.GetText() ?? context.compop().OP_B_NEQ()?.GetText() ?? context.compop().OP_GRT()?.GetText()
             ?? throw new Exception("Invalid comparison operator");
 
+        HandleCompExpr(left, right, compOp);
+    }
+
+    public override void ExitBOOLEXPRCOMPGRP(LatticeParser.BOOLEXPRCOMPGRPContext context)
+    {
+        var right = PopBooleanExpressionFromStack();
+        var left = PopBooleanExpressionFromStack();
+        var compOp = context.compop().OP_B_EQ()?.GetText() ?? context.compop().OP_B_NEQ()?.GetText() ?? context.compop().OP_GRT()?.GetText()
+            ?? throw new Exception("Invalid comparison operator");
+        HandleCompExpr(left, right, compOp);
+
+    }
+
+    private void HandleCompExpr(LatticeExpression left, LatticeExpression right, string compOp)
+    {
         //type check
         if (right.EvaluationType == left.EvaluationType)
         {
-            
+            var expression = new LatticeExpression($"{left} {compOp} {right}", LatticeType.Bool);
+            ListenerHelper.SharedListenerStack.Push(expression);
         }
         else
         {
             throw new Exception("Type mismatch in comparison operator");
         }
-        
-        var expression = new LatticeExpression($"{left} {compOp} {right}", LatticeType.Bool);
-        ListenerHelper.SharedListenerStack.Push(expression);
-
     }
 
     public override void ExitBOOLOP(LatticeParser.BOOLOPContext context)
