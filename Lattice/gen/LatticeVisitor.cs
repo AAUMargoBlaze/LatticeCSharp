@@ -98,11 +98,11 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] LatticeParser.TypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context);
+	Result VisitVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.tailvarassignorgraphmanip"/>.
 	/// </summary>
@@ -134,12 +134,6 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitGraphop([NotNull] LatticeParser.GraphopContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.addref"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -152,11 +146,11 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAddclone([NotNull] LatticeParser.AddcloneContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Visit a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAddrel([NotNull] LatticeParser.AddrelContext context);
+	Result VisitTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.

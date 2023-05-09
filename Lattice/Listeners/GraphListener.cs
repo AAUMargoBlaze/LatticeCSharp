@@ -6,6 +6,7 @@ namespace Lattice.Listeners;
 
 public class GraphListener : LatticeBaseListener
 {
+    
     public override void ExitVardecl(LatticeParser.VardeclContext context)
     {
         var type = LatticeTypeHelper.StringToLatticeType(context.type().GetText());
@@ -28,6 +29,7 @@ public class GraphListener : LatticeBaseListener
         }
     }
 
+
     public override void EnterTailgraphmanip(LatticeParser.TailgraphmanipContext context)
     {
         //I really despise this solution, please don't judge
@@ -41,9 +43,9 @@ public class GraphListener : LatticeBaseListener
             var currentGraphContext = ContextManager.GetCurrentContext();
             ListenerHelper.SharedListenerStack.Push(new LatticeExpression(currentGraphContext.Name, LatticeType.Graph));
         }
-        else if (granny is LatticeParser.VarassignorgraphmanipContext)
+        else if (granny is LatticeParser.VarassignorgraphmaniporaddrelContext)
         {
-            var id = ((LatticeParser.VarassignorgraphmanipContext)granny).ID().GetText();
+            var id = ((LatticeParser.VarassignorgraphmaniporaddrelContext)granny).ID().GetText();
             ContextManager.EnterSubContext(id);
         }
     }
@@ -69,16 +71,17 @@ public class GraphListener : LatticeBaseListener
         GlobalFileManager.Write(Program.NewLine);
     }
 
-    public override void ExitAddrel(LatticeParser.AddrelContext context)
+    public override void ExitTailaddrel(LatticeParser.TailaddrelContext context)
     {
+        var parentContext = (LatticeParser.VarassignorgraphmaniporaddrelContext)context.Parent;
         var ids = context.ID();
         var currentGraph = ContextManager.GetCurrentGraphContext();
         GlobalFileManager.Write($"{currentGraph.Name}.add_edge(");
 
-        var predecessor = currentGraph.GetNode(ids[0].GetText());
+        var predecessor = currentGraph.GetNode(parentContext.ID().GetText());
         GlobalFileManager.Write($"{currentGraph.Name}.get_node('{predecessor.Id}'), ");
         
-        var successor = currentGraph.GetNode(ids[1].GetText());
+        var successor = currentGraph.GetNode(context.ID().GetText());
         GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}'), ");
         
         var cost = Convert.ToInt32(context.number().GetText());

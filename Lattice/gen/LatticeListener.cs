@@ -141,15 +141,15 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitType([NotNull] LatticeParser.TypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Enter a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context);
+	void EnterVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.varassignorgraphmanip"/>.
+	/// Exit a parse tree produced by <see cref="LatticeParser.varassignorgraphmaniporaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitVarassignorgraphmanip([NotNull] LatticeParser.VarassignorgraphmanipContext context);
+	void ExitVarassignorgraphmaniporaddrel([NotNull] LatticeParser.VarassignorgraphmaniporaddrelContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.tailvarassignorgraphmanip"/>.
 	/// </summary>
@@ -201,16 +201,6 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTailgraphmanip([NotNull] LatticeParser.TailgraphmanipContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterGraphop([NotNull] LatticeParser.GraphopContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.graphop"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitGraphop([NotNull] LatticeParser.GraphopContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.addref"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -231,15 +221,15 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAddclone([NotNull] LatticeParser.AddcloneContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Enter a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAddrel([NotNull] LatticeParser.AddrelContext context);
+	void EnterTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LatticeParser.addrel"/>.
+	/// Exit a parse tree produced by <see cref="LatticeParser.tailaddrel"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAddrel([NotNull] LatticeParser.AddrelContext context);
+	void ExitTailaddrel([NotNull] LatticeParser.TailaddrelContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>UMINUS</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.

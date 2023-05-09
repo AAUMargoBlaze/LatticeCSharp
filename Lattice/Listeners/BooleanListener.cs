@@ -65,8 +65,8 @@ public class BooleanListener : LatticeBaseListener
         {
             throw new Exception("Type mismatch in comparison operator");
         }
-
-            var expression = new LatticeExpression($"{left} {compOp} {right}", LatticeType.Bool);
+        
+        var expression = new LatticeExpression($"{left} {compOp} {right}", LatticeType.Bool);
         ListenerHelper.SharedListenerStack.Push(expression);
 
     }

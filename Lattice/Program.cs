@@ -14,15 +14,13 @@ namespace Lattice
         {
             string sourceFile = args[0];
             string outFile = args[1];
-            GlobalFileManager.Initialize(outFile);
+            //GlobalFileManager.Initialize(outFile);
 
             string fileContents = File.ReadAllText(sourceFile);
             var inputStream = new CodePointCharStream(fileContents);
             var latticeLexer = new CustomLatticeLexer(inputStream);
             var commonTokenStream = new CommonTokenStream(latticeLexer);
             var latticeParser = new LatticeParser(commonTokenStream);
-
-
             
             latticeParser.AddParseListener(new StdLibListener(commonTokenStream));
             latticeParser.AddParseListener(new VariableListener());
