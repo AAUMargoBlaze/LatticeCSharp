@@ -1,3 +1,4 @@
+using System.Configuration;
 using Antlr4.Runtime.Tree;
 using Lattice.CommonElements.Expressions;
 
@@ -13,9 +14,8 @@ public class LatticeVariable : ICloneable
     public string Value
     {
         get => _value;
-        set => _value = value;
     }
-
+    
     public LatticeVariable(string id, LatticeType type)
     {
         Id = id;
@@ -23,10 +23,19 @@ public class LatticeVariable : ICloneable
         _value = LatticeTypeHelper.GetDefaultValueOfLatticeType(type);
     }
 
+    public void SetValue(LatticeExpression expression)
+    {
+        if (expression.EvaluationType != Type)
+        {
+            throw new Exception($"Can't assign {expression.EvaluationType} to {Type}");
+        }
+
+        _value = expression.ExpressionText;
+    }
     public object Clone()
     {
         var cloned = new LatticeVariable(Id, Type);
-        cloned.Value = _value;
+        cloned.SetValue(new LatticeExpression(_value, Type));
         return cloned;
     }
 }

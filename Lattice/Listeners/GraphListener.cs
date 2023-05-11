@@ -63,7 +63,7 @@ public class GraphListener : LatticeBaseListener
 
 
         var node = new Node(id, ltVar.Type);
-        node.Value = ltVar.Value;
+        node.SetValue(new LatticeExpression(ltVar.Value, ltVar.Type));
             
         currentGraphContext.DeclareNode(id, node);
             

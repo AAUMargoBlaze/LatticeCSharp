@@ -1,4 +1,5 @@
 using Lattice.CommonElements;
+using Lattice.CommonElements.Expressions;
 
 namespace Lattice;
 
@@ -41,13 +42,13 @@ public abstract class Context : ICloneable
         _variables.Add(key, value);
     }
 
-    public void AssignValueToVariable<T>(string key, string newValue)
+    public void AssignValueToVariable<T>(string key, LatticeExpression newValue)
     {
         if (_variables.TryGetValue(key, out var oldValue))
         {
             try
             {
-                oldValue.Value = newValue;
+                oldValue.SetValue(newValue);
             }
             catch (Exception e)
             {
