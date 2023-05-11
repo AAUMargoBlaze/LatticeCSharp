@@ -27,8 +27,8 @@ public static class ContextManager
     public static Context OpenNewSubContext(Context newContext)
     {
         PushDownVariablesToSubContext(ref newContext);
-        ContextStack.Push(newContext);
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
+        ContextStack.Push(newContext);
         return GetCurrentContext();
     }
 
