@@ -27,14 +27,14 @@ public class VariableListener : LatticeBaseListener
             var id = ((LatticeParser.VarassignorgraphmaniporaddrelContext)granny).ID().GetText();
             var latticeVar = ContextManager.GetCurrentContext().GetVariable(id);
             var expression = ListenerHelper.SharedListenerStack.Pop();
-            latticeVar.Value = expression.ExpressionText;
+            latticeVar.SetValue(expression);
             AssignVarValueAndPrintPythonCode(ref latticeVar, expression);
         }
     }
 
     private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, LatticeExpression expression)
     {
-        targetVar.Value = expression.ExpressionText;
+        targetVar.SetValue(expression);
         GlobalFileManager.Write($"{targetVar.Id} = {targetVar.Value} {Program.NewLine}");
     }
 }

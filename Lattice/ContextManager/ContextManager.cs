@@ -30,8 +30,8 @@ public static class ContextManager
         {
             PushDownVariablesToSubContext(ref newContext);
         }
-        ContextStack.Push(newContext);
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
+        ContextStack.Push(newContext);
         return GetCurrentContext();
     }
 
