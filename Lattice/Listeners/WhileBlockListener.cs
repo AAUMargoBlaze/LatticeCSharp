@@ -9,11 +9,13 @@ public class WhileBlockListener : LatticeBaseListener
 
     public override void ExitWhileblockheader(LatticeParser.WhileblockheaderContext context)
     {
-        string key = Guid.NewGuid().ToString();
-        var ifContext = new WhileBlockContext(key);
-        ContextManager.OpenNewSubContext(ifContext);
+        var expression = ListenerHelper.SharedListenerStack.Pop();
         
-        GlobalFileManager.Write($":{Program.NewLine}");
+        string key = Guid.NewGuid().ToString();
+        var whileContext = new WhileBlockContext(key);
+        ContextManager.OpenNewSubContext(whileContext);
+        
+        GlobalFileManager.Write($"{expression}:{Program.NewLine}");
         GlobalFileManager.Indent();
     }
 

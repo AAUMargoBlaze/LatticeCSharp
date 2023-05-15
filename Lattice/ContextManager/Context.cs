@@ -115,5 +115,11 @@ public abstract class Context : ICloneable
     {
         return _variables;
     }
+    public Dictionary<string, GraphContext>  ReturnAllDeclaredGraphs()
+    {
+        return _subContexts
+            .Where(kvp => kvp.Value is GraphContext)
+            .ToDictionary(kvp => kvp.Key, kvp => (GraphContext)kvp.Value);
+    }
 
 }

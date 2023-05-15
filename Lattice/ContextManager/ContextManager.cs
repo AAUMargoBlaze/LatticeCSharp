@@ -38,6 +38,7 @@ public static class ContextManager
         else
         {
             PushDownVariablesToSubContext(ref newContext);
+            PushDownGraphsToSubContext(ref newContext);
         }
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
         ContextStack.Push(newContext);
@@ -70,6 +71,14 @@ public static class ContextManager
         foreach (var kvp in parentVars)
         {
             newContext.DeclareVariable(kvp.Key, kvp.Value);
+        }
+    }
+    private static void PushDownGraphsToSubContext(ref Context newContext)
+    {
+        var parentContexts = GetCurrentContext().ReturnAllDeclaredGraphs();
+        foreach (var kvp in parentContexts)
+        {
+            newContext.DeclareContext(kvp.Key, kvp.Value);
         }
     }
 }

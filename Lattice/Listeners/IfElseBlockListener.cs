@@ -9,8 +9,9 @@ public class IfElseBlockListener : LatticeBaseListener
 
     public override void ExitIfheader(LatticeParser.IfheaderContext context)
     {
+        var expression = ListenerHelper.SharedListenerStack.Pop();
         OpenNewIfElseContext();
-        GlobalFileManager.Write($":{Program.NewLine}");
+        GlobalFileManager.Write($"{expression}:{Program.NewLine}");
         GlobalFileManager.Indent();
     }
 
