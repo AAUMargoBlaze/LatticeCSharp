@@ -11,15 +11,6 @@ public class BooleanListener : LatticeBaseListener
         ListenerHelper.SharedListenerStack.Push(new LatticeExpression(bool.Parse(value).ToString(), LatticeType.Bool)); //type check for lazy people
     }
 
-    public override void ExitOutmostboolexpr(LatticeParser.OutmostboolexprContext context)
-    {
-        if (!(context.Parent is LatticeParser.AssignvalContext))
-        {
-            //we don't want to dump it if it's not a var assign
-            GlobalFileManager.Write(PopBooleanExpressionFromStack().ToString());
-        }
-    }
-
     public override void ExitNOT(LatticeParser.NOTContext context)
     {
         var expression = PopBooleanExpressionFromStack();

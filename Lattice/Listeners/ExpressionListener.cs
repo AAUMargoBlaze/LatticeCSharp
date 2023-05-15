@@ -1,3 +1,4 @@
+using System.Text;
 using Lattice.CommonElements;
 using Lattice.CommonElements.Expressions;
 
@@ -5,15 +6,6 @@ namespace Lattice.Listeners;
 
 public class ExpressionListener : LatticeBaseListener
 {
-    public override void ExitOutmostexpr(LatticeParser.OutmostexprContext context)
-    {
-        if (!(context.Parent is LatticeParser.AssignvalContext))
-        {
-            //we don't want to dump it if it's not a var assign
-            GlobalFileManager.Write(PopExpressionFromStack().ToString());
-        }
-    }
-
     public override void ExitIDCASE(LatticeParser.IDCASEContext context)
     {
         var id = context.ID().GetText();
@@ -91,6 +83,57 @@ public class ExpressionListener : LatticeBaseListener
             return;
         }
 
+    }
+
+    public override void ExitFunccall(LatticeParser.FunccallContext context)
+    {
+        var name = context.ID().GetText();
+        StringBuilder expressionText = new StringBuilder();
+        if (!ContextManager.DeclaredFunctions.TryGetValue(name, out var function))
+        {
+            throw new Exception($"Undeclared function: {name}");
+        }
+
+        expressionText.Append($"{name}(");
+        
+        //reversed because the rightmost expression is pushed last in the stack
+        var reversedClone = new Queue<(string name, LatticeType type)>(function.Parameters.Reverse());
+        var functionCallExpressionStack = new Stack<LatticeExpression>();
+        while (0 < reversedClone.Count)
+        {
+            var param = reversedClone.Dequeue();
+            var expr = ListenerHelper.SharedListenerStack.Pop();
+            if (param.type != expr.EvaluationType)
+            {
+                throw new Exception($"Invalid function call. {param.name} is of type {param.type}, instead called" +
+                                    $"with type {expr.EvaluationType} - {expr.ExpressionText}");
+            }
+            functionCallExpressionStack.Push(expr);
+        }
+
+        while (0 < functionCallExpressionStack.Count)
+        {
+            var expr = functionCallExpressionStack.Pop();
+            expressionText.Append(expr.ExpressionText);
+            if (0 < functionCallExpressionStack.Count)
+            {
+                expressionText.Append(", ");
+            }
+        }
+        
+        expressionText.Append(")");
+
+        //print it if statement, otherwise push on stack
+        if (context.Parent is LatticeParser.StatementContext)
+        {
+            GlobalFileManager.Write(expressionText.ToString());
+            GlobalFileManager.Write(Program.NewLine);
+        }
+        else
+        {
+            var newExpr = new LatticeExpression(expressionText.ToString(), function.ReturnType);
+            ListenerHelper.SharedListenerStack.Push(newExpr);
+        }
     }
 
     private void NumericExpression(string pythonOperator)

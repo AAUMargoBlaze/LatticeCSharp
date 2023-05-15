@@ -19,9 +19,10 @@ statement
     | addclone
     | addref
     ;
-funcdef : funcdefheader LEFT_BRACE statement* returnstatement? RIGHT_BRACE; 
+funcstatement : statement | returnstatement;
+funcdef : funcdefheader LEFT_BRACE funcstatement* RIGHT_BRACE; 
 funcdefheader: KEYWORD_DEF type ID LEFT_PAREN (listargs)? RIGHT_PAREN;
-returnstatement :  OP_RETURN assignval SEMICOLON;
+returnstatement :  OP_RETURN (outmostexpr | outmostboolexpr) SEMICOLON;
 listargs : arg taillistarg; 
 arg : type ID; 
 taillistarg : (COMMA arg)*; 
@@ -77,7 +78,7 @@ funccall : ID LEFT_PAREN (listparams)? RIGHT_PAREN;
 whileblock : whileblockheader LEFT_BRACE statement* RIGHT_BRACE; /*add break and continue ? */
 whileblockheader: KEYWORD_WHILE LEFT_PAREN outmostboolexpr RIGHT_PAREN;
 listparams : param taillistparams;
-param : ID;
+param : (outmostboolexpr | outmostexpr);
 taillistparams : (COMMA param)*;
 /*
  * Lexer Rules

@@ -32,6 +32,7 @@ public class StdLibListener : LatticeBaseListener
     {
         var outVal = context.STRING()?.GetText();
         var id = context.ID()?.GetText();
+        //todo check if variable exists;
         if (id != null)
         {
             GlobalFileManager.Write($"print({id}) {Program.NewLine}");

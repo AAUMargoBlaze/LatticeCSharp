@@ -60,6 +60,18 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] LatticeParser.StatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.funcstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFuncstatement([NotNull] LatticeParser.FuncstatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.funcstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFuncstatement([NotNull] LatticeParser.FuncstatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.funcdef"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

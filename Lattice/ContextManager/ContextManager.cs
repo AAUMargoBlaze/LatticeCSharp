@@ -4,6 +4,10 @@ public static class ContextManager
 {
     private static readonly Stack<Context> ContextStack = new Stack<Context>(new []{  new GraphContext("Global") { GlobalContext = true } });
 
+    public static readonly Dictionary<string,FunctionContext> DeclaredFunctions = new();
+
+    public static FunctionContext? CurrentFunctionContext { get; private set; }
+
     public static Context GetCurrentContext()
     {
         return ContextStack.Peek();
@@ -26,7 +30,12 @@ public static class ContextManager
     }
     public static Context OpenNewSubContext(Context newContext)
     {
-        if (newContext is not FunctionContext)
+        if (newContext is FunctionContext context)
+        {
+            DeclaredFunctions.Add(context.Name, context);
+            CurrentFunctionContext = context;
+        }
+        else
         {
             PushDownVariablesToSubContext(ref newContext);
         }
@@ -47,8 +56,12 @@ public static class ContextManager
         {
             throw new Exception("Can't exit global context");
         }
+
+        if (GetCurrentContext() is FunctionContext)
+        {
+            CurrentFunctionContext = null;
+        }
         return ContextStack.Pop();
-        
     }
 
     private static void PushDownVariablesToSubContext(ref Context newContext)

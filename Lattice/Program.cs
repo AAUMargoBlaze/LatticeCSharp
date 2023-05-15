@@ -29,6 +29,7 @@ namespace Lattice
             latticeParser.AddParseListener(new IfElseBlockListener());
             latticeParser.AddParseListener(new WhileBlockListener());
             latticeParser.AddParseListener(new ExpressionListener());
+            latticeParser.AddParseListener(new FunctionListener());
             latticeParser.start();
 
 
