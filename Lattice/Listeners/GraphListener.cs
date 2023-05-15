@@ -89,20 +89,16 @@ public class GraphListener : LatticeBaseListener
         var parentContext = (LatticeParser.VarassignorgraphmaniporaddrelContext)context.Parent;
         var ids = context.ID();
         var currentGraph = ContextManager.GetCurrentGraphContext();
-        GlobalFileManager.Write($"{currentGraph.Name}.add_edge(");
 
         var predecessor = currentGraph.GetNode(parentContext.ID().GetText());
-        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{predecessor.Id}'), ");
-        
-        var successor = currentGraph.GetNode(context.ID().GetText());
-        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}'), ");
+        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{predecessor.Id}').add_edge(");
         
         var cost = Convert.ToInt32(context.number().GetText());
-        GlobalFileManager.Write($"TraverseEdge({cost}, ");
-
-        
         var label = context.STRING().GetText().Replace("\"", string.Empty);
-        GlobalFileManager.Write($"\"{label}\"");
+        GlobalFileManager.Write($"Edge(\"{label}\"), ");
+        
+        var successor = currentGraph.GetNode(context.ID().GetText());
+        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}')");
 
         var relationship = new DirectedRelationship(predecessor, successor)
         {
@@ -111,7 +107,7 @@ public class GraphListener : LatticeBaseListener
         };
         ContextManager.GetCurrentGraphContext().DeclareRelationship(relationship);
 
-        GlobalFileManager.Write($")) {Program.NewLine}");
+        GlobalFileManager.Write($") {Program.NewLine}");
     }
 
     private void OpenNewContext(string id)
