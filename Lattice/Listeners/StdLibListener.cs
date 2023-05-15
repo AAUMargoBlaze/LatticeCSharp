@@ -18,7 +18,6 @@ public class StdLibListener : LatticeBaseListener
         {
             var interject = ListenerHelper.LexerInterjects.Dequeue();
             GlobalFileManager.Write(interject);
-            GlobalFileManager.Write(Program.NewLine);
         }
     }
 
