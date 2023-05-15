@@ -6,6 +6,7 @@ public class Node : LatticeVariable, ICloneable
     public Node(string id, LatticeType type) : base(id, type) { }
     public new object Clone()
     {
-        return new Node(Id, Type);
+        string unique = Guid.NewGuid().ToString();
+        return new Node($"{Id}-{unique}", Type);
     }
 }

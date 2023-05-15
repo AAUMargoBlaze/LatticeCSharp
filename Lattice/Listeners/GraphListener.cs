@@ -66,9 +66,22 @@ public class GraphListener : LatticeBaseListener
         node.SetValue(new LatticeExpression(ltVar.Value, ltVar.Type));
             
         currentGraphContext.DeclareNode(id, node);
-            
+        
         GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes({id}=Node({node.Value}))");
         GlobalFileManager.Write(Program.NewLine);
+    }
+
+    public override void ExitAddclone(LatticeParser.AddcloneContext context)
+    {
+        var currentGraphContext = ContextManager.GetCurrentGraphContext();
+        var id = context.ID().GetText();
+        var oldNode = currentGraphContext.GetNode(id);
+        
+        var newNode = (Node)oldNode.Clone();
+        currentGraphContext.DeclareNode(newNode.Id, newNode);
+        
+        GlobalFileManager.Write($"{newNode.Id} = {oldNode.Id}.copy() {Program.NewLine}");
+        GlobalFileManager.Write($"{currentGraphContext}.add_nodes({newNode.Id} = {newNode.Id}) {Program.NewLine}");
     }
 
     public override void ExitTailaddrel(LatticeParser.TailaddrelContext context)
