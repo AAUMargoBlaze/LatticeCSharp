@@ -92,6 +92,12 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitPrintstatement([NotNull] LatticeParser.PrintstatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.fmapstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFmapstatement([NotNull] LatticeParser.FmapstatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.vardecl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -218,13 +224,6 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMULOPGRP([NotNull] LatticeParser.MULOPGRPContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>FUNCTIONMAPPING</c>
-	/// labeled alternative in <see cref="LatticeParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFUNCTIONMAPPING([NotNull] LatticeParser.FUNCTIONMAPPINGContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ADDOPGRP</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.

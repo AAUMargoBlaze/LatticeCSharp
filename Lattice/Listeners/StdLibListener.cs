@@ -45,4 +45,37 @@ public class StdLibListener : LatticeBaseListener
         }
         throw new Exception("Invalid print statement");
     }
+
+    public override void ExitFmapstatement(LatticeParser.FmapstatementContext context)
+    {
+        var graphName = context.ID()[0].GetText();
+        var functionName = context.ID()[1].GetText();
+
+        if (!ContextManager.DeclaredFunctions.TryGetValue(functionName, out var function))
+        {
+            throw new Exception($"Function not found {functionName}");
+        }
+
+        GraphContext graph;
+        try
+        {
+             graph = (GraphContext)ContextManager.GetCurrentContext().GetSubContext(graphName);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{graphName} is not a graph");
+        }
+
+        if (graph.CheckFmapTypeSafety(function))
+        {
+            graph.ApplyFmap(function);
+            GlobalFileManager.Write($"{graphName}.apply({functionName}){Program.NewLine}");
+        }
+        else
+        {
+            throw new Exception(
+                "Fmap function must take exactly one parameter, and that parameter must match the type of every node");
+        }
+        
+    }
 }

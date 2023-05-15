@@ -17,6 +17,7 @@ statement
     |whileblock
     |funccall SEMICOLON /*depends on the role we want functions/methods to have */
     | addclone
+    | fmapstatement
     | addref
     ;
 funcstatement : statement | returnstatement;
@@ -27,6 +28,7 @@ listargs : arg taillistarg;
 arg : type ID; 
 taillistarg : (COMMA arg)*; 
 printstatement: OP_PRINT (ID | STRING) SEMICOLON; 
+fmapstatement:  KEYWORD_FMAP ID ID SEMICOLON; 
 vardecl     : type ID vardecltail; 
 vardecltail : tailvarassignorgraphmanip | SEMICOLON; 
 type        
@@ -53,7 +55,6 @@ expr : OP_SUB expr     # UMINUS
    |  number # DOUBLE
    | ID # IDCASE
    | funccall #FUNCTIONCALL
-   | KEYWORD_FMAP ID ID # FUNCTIONMAPPING
    | STRING #STRINGEXPR
    ;
 number : INTEGER | FLOAT_LIT; 

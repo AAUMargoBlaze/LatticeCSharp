@@ -156,6 +156,18 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPrintstatement([NotNull] LatticeParser.PrintstatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.fmapstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFmapstatement([NotNull] LatticeParser.FmapstatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.fmapstatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFmapstatement([NotNull] LatticeParser.FmapstatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.vardecl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -409,20 +421,6 @@ public partial class LatticeBaseListener : ILatticeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMULOPGRP([NotNull] LatticeParser.MULOPGRPContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>FUNCTIONMAPPING</c>
-	/// labeled alternative in <see cref="LatticeParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFUNCTIONMAPPING([NotNull] LatticeParser.FUNCTIONMAPPINGContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FUNCTIONMAPPING</c>
-	/// labeled alternative in <see cref="LatticeParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFUNCTIONMAPPING([NotNull] LatticeParser.FUNCTIONMAPPINGContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ADDOPGRP</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.

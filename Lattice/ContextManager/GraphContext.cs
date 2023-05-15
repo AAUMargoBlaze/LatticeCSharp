@@ -1,4 +1,5 @@
 using Lattice.CommonElements;
+using Lattice.CommonElements.Expressions;
 using Lattice.CommonElements.Relationships;
 
 namespace Lattice;
@@ -53,9 +54,22 @@ public class GraphContext : Context
         throw new ArgumentException($"Relationship with name {key} never declared in context {Name}");
     }
 
-    
+    public bool CheckFmapTypeSafety(FunctionContext functionContext)
+    {
+        return functionContext.Parameters.Count == 1 && _nodes.All(kvp => kvp.Value.Type == functionContext.Parameters.Peek().type);
+    }
 
-
+    public void ApplyFmap(FunctionContext functionContext)
+    {
+        //5 => funcname(5)
+        foreach (var kvp in _nodes.ToList())
+        {
+            var newNode = new Node(kvp.Value.Id, functionContext.ReturnType);
+            newNode.SetValue(new LatticeExpression($"{functionContext.Name}({kvp.Value.Value})", functionContext.ReturnType));
+            _nodes.Remove(kvp.Key);
+            _nodes.Add(kvp.Key, newNode);
+        }
+    }
     public new object Clone()
     {
         var newContext = new GraphContext(Name) { GlobalContext = false };

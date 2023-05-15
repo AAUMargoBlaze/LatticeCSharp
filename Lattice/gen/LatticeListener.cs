@@ -131,6 +131,16 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPrintstatement([NotNull] LatticeParser.PrintstatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.fmapstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFmapstatement([NotNull] LatticeParser.FmapstatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.fmapstatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFmapstatement([NotNull] LatticeParser.FmapstatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.vardecl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -344,18 +354,6 @@ public interface ILatticeListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMULOPGRP([NotNull] LatticeParser.MULOPGRPContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>FUNCTIONMAPPING</c>
-	/// labeled alternative in <see cref="LatticeParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFUNCTIONMAPPING([NotNull] LatticeParser.FUNCTIONMAPPINGContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>FUNCTIONMAPPING</c>
-	/// labeled alternative in <see cref="LatticeParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFUNCTIONMAPPING([NotNull] LatticeParser.FUNCTIONMAPPINGContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ADDOPGRP</c>
 	/// labeled alternative in <see cref="LatticeParser.expr"/>.
