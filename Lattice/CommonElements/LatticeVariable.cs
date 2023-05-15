@@ -1,3 +1,4 @@
+using System.Configuration;
 using Antlr4.Runtime.Tree;
 using Lattice.CommonElements.Expressions;
 
@@ -13,9 +14,8 @@ public class LatticeVariable : ICloneable
     public string Value
     {
         get => _value;
-        set => _value = value;
     }
-
+    
     public LatticeVariable(string id, LatticeType type)
     {
         Id = id;
@@ -23,6 +23,7 @@ public class LatticeVariable : ICloneable
         _value = LatticeTypeHelper.GetDefaultValueOfLatticeType(type);
     }
 
+    public void SetVal
     public object Clone()
     {
         var cloned = new LatticeVariable(Id, Type);

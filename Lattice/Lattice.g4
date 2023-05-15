@@ -16,13 +16,11 @@ statement
     | ifblock
     |whileblock
     |funccall SEMICOLON /*depends on the role we want functions/methods to have */
-    | returnstatement
     | addclone
     | addref
-    | outmostexpr
-    | boolexpr
     ;
-funcdef : KEYWORD_DEF type ID LEFT_PAREN (listargs)? RIGHT_PAREN LEFT_BRACE statement*  RIGHT_BRACE; 
+funcdef : funcdefheader LEFT_BRACE statement* returnstatement? RIGHT_BRACE; 
+funcdefheader: KEYWORD_DEF type ID LEFT_PAREN (listargs)? RIGHT_PAREN;
 returnstatement :  OP_RETURN assignval SEMICOLON;
 listargs : arg taillistarg; 
 arg : type ID; 

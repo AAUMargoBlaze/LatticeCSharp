@@ -26,7 +26,10 @@ public static class ContextManager
     }
     public static Context OpenNewSubContext(Context newContext)
     {
-        PushDownVariablesToSubContext(ref newContext);
+        if (newContext is not FunctionContext)
+        {
+            PushDownVariablesToSubContext(ref newContext);
+        }
         ContextStack.Push(newContext);
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
         return GetCurrentContext();

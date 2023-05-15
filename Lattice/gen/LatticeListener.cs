@@ -61,6 +61,16 @@ public interface ILatticeListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFuncdef([NotNull] LatticeParser.FuncdefContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LatticeParser.funcdefheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFuncdefheader([NotNull] LatticeParser.FuncdefheaderContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LatticeParser.funcdefheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFuncdefheader([NotNull] LatticeParser.FuncdefheaderContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LatticeParser.returnstatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

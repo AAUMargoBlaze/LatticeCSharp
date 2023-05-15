@@ -50,6 +50,12 @@ public interface ILatticeVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFuncdef([NotNull] LatticeParser.FuncdefContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LatticeParser.funcdefheader"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFuncdefheader([NotNull] LatticeParser.FuncdefheaderContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="LatticeParser.returnstatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
