@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Antlr4.Runtime;
 
@@ -24,7 +25,7 @@ public class StdLibListener : LatticeBaseListener
     public override void EnterStart(LatticeParser.StartContext context)
     {
         GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
-        GlobalFileManager.Write($"from lattice import TraverseEdge {Program.NewLine}");
+        GlobalFileManager.Write($"from lattice import VisualEdge as Edge {Program.NewLine}");
         GlobalFileManager.Write($"from lattice import BBTree, Graph {Program.NewLine}");
     }
 

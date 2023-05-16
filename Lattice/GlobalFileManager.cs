@@ -51,7 +51,7 @@ public static class GlobalFileManager
 
     private static string ApplyOffset(string text)
     {
-        return new string('\t', offsetCounter)+text;
+        return new string(' ', offsetCounter*4)+text;
     }
 
     private static void WriteToStdout(string outString)
