@@ -80,8 +80,8 @@ public class GraphListener : LatticeBaseListener
         var newNode = (Node)oldNode.Clone();
         currentGraphContext.DeclareNode(newNode.Id, newNode);
         
-        GlobalFileManager.Write($"{newNode.Id} = {oldNode.Id}.copy() {Program.NewLine}");
-        GlobalFileManager.Write($"{currentGraphContext}.add_nodes({newNode.Id} = {newNode.Id}) {Program.NewLine}");
+        GlobalFileManager.Write($"{newNode.Id} = {currentGraphContext.Name}.get_node(\"{oldNode.Id}\").copy() {Program.NewLine}");
+        GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes({newNode.Id} = {newNode.Id}) {Program.NewLine}");
     }
 
     public override void ExitTailaddrel(LatticeParser.TailaddrelContext context)
