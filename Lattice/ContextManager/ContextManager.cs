@@ -1,3 +1,5 @@
+using System.Configuration;
+
 namespace Lattice;
 
 public static class ContextManager
@@ -6,6 +8,7 @@ public static class ContextManager
 
     public static readonly Dictionary<string,FunctionContext> DeclaredFunctions = new();
 
+    private static readonly Dictionary<string,GraphContext> DeclaredGraphContexts = new();
     public static FunctionContext? CurrentFunctionContext { get; private set; }
 
     public static Context GetCurrentContext()
@@ -40,6 +43,13 @@ public static class ContextManager
             PushDownVariablesToSubContext(ref newContext);
             PushDownGraphsToSubContext(ref newContext);
         }
+        
+        if (newContext is GraphContext graphContext)
+        {
+            DeclaredGraphContexts.Add(graphContext.Name, graphContext);
+        }
+        
+
         GetCurrentContext().DeclareContext(newContext.Name, newContext);
         ContextStack.Push(newContext);
         return GetCurrentContext();
@@ -63,6 +73,11 @@ public static class ContextManager
             CurrentFunctionContext = null;
         }
         return ContextStack.Pop();
+    }
+
+    public static Context GetContext(string Id)
+    {
+        return DeclaredGraphContexts[Id];
     }
 
     private static void PushDownVariablesToSubContext(ref Context newContext)

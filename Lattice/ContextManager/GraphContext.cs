@@ -73,21 +73,40 @@ public class GraphContext : Context
     public new object Clone()
     {
         var newContext = new GraphContext(Name) { GlobalContext = false };
-        IterateNodesToNewContext(newContext);
-        IterateRelationshipsToNewContext(newContext);
+        IterateToNewContext(newContext);
 
         newContext = (GraphContext)ContextClone(newContext);
         
         return newContext;
     }
     
-    private void IterateNodesToNewContext(GraphContext newGraphContext)
+    public void IterateToNewContext(GraphContext newGraphContext)
     {
-        _nodes.ToList().ForEach(kvp => newGraphContext.DeclareNode(kvp.Key, (Node)kvp.Value.Clone()));
-    }
+        foreach (var nodeKVP in _nodes)
+        {
+            var clonedNode = (Node)nodeKVP.Value.Clone();
+            newGraphContext.DeclareNode(nodeKVP.Key, clonedNode);
+        }
 
-    private void IterateRelationshipsToNewContext(GraphContext newGraphContext)
-    {
-        _relationships.ToList().ForEach(kvp => newGraphContext.DeclareRelationship(kvp.Key, (Relationship)kvp.Value.Clone()));
+        foreach (var relKVP in _relationships)
+        {
+            var oldRel = relKVP.Value;
+            if (oldRel is DirectedRelationship)
+            {
+                var oldDirRel = (DirectedRelationship)oldRel;
+                var predCloneNode = newGraphContext.GetNode(oldDirRel.Predecessor.Id);
+                var sucCloneNode = newGraphContext.GetNode(oldDirRel.Successor.Id);
+
+                var rel = new DirectedRelationship(predCloneNode, sucCloneNode);
+                rel.Cost = oldDirRel.Cost;
+                rel.Label = oldDirRel.Label;
+
+                newGraphContext.DeclareRelationship(rel);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

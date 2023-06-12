@@ -75,13 +75,37 @@ public class GraphListener : LatticeBaseListener
     {
         var currentGraphContext = ContextManager.GetCurrentGraphContext();
         var id = context.ID().GetText();
-        var oldNode = currentGraphContext.GetNode(id);
+        Node oldNode;
         
-        var newNode = (Node)oldNode.Clone();
-        currentGraphContext.DeclareNode(newNode.Id, newNode);
+        //as you can tell, I gave up about code cleanliness here
+        try
+        {
+            try
+            {
+                oldNode = currentGraphContext.GetNode(id);
+                var newNode = (Node)oldNode.Clone();
+                currentGraphContext.DeclareNode(newNode.Id, newNode);
+                GlobalFileManager.Write(
+                    $"{currentGraphContext.Name}.add_nodes({newNode.PythonId} = {newNode.PythonId}) {Program.NewLine}");
+                GlobalFileManager.Write(
+                    $"{newNode.PythonId} = {currentGraphContext.Name}.get_node(\"{oldNode.Id}\").copy() {Program.NewLine}");
+
+            }
+            catch (Exception e)
+            {
+                var cloneVar = (LatticeVariable)currentGraphContext.GetVariable(id).Clone();
+                var node = new Node(cloneVar.Id, cloneVar.Type, cloneVar.PythonId);
+                currentGraphContext.DeclareNode(node.Id, node);
+                GlobalFileManager.Write(
+                    $"{currentGraphContext.Name}.add_nodes({node.PythonId}=Node({node.Value})) {Program.NewLine}");
+            }
+        }
+        catch (Exception e)
+        {
+            var graphToBeCloned = (GraphContext)ContextManager.GetContext(id);
+            
+        }
         
-        GlobalFileManager.Write($"{newNode.Id} = {currentGraphContext.Name}.get_node(\"{oldNode.Id}\").copy() {Program.NewLine}");
-        GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes({newNode.Id} = {newNode.Id}) {Program.NewLine}");
     }
 
     public override void ExitTailaddrel(LatticeParser.TailaddrelContext context)

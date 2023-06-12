@@ -34,7 +34,16 @@ public class VariableListener : LatticeBaseListener
 
     private void AssignVarValueAndPrintPythonCode(ref LatticeVariable targetVar, LatticeExpression expression)
     {
-        targetVar.SetValue(expression);
+        try
+        {
+            var node = ContextManager.GetCurrentGraphContext().GetNode(expression.ToString());
+            targetVar.SetValue(new LatticeExpression(node.PythonId, node.Type));
+        }
+        catch (Exception e)
+        {
+            targetVar.SetValue(expression);
+        }
         GlobalFileManager.Write($"{targetVar.Id} = {targetVar.Value} {Program.NewLine}");
+
     }
 }
