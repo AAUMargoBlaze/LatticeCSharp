@@ -15,10 +15,11 @@ public class GraphContext : Context
     {
     }
 
-    public void DeclareNode(string key, Node value)
+    public Node DeclareNode(string key, Node value)
     {
         _nodes.Remove(key); //node immutability
         _nodes.Add(key, value);
+        return value;
     }
     
     public Node GetNode(string key)
@@ -109,4 +110,16 @@ public class GraphContext : Context
             }
         }
     }
+
+    public void Reset()
+    {
+        _nodes = new ();
+        _relationships = new ();
+        _variables = new();
+        _subContexts = new();
+    }
+    public Dictionary<string, Node>  ReturnAllDeclaredNodes()
+    {
+        return _nodes;
+    } 
 }

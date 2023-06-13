@@ -25,8 +25,8 @@ public abstract class Context : ICloneable
         }
     }    
     
-    private Dictionary<string, LatticeVariable> _variables = new ();
-    private Dictionary<string, Context> _subContexts = new ();
+    protected Dictionary<string, LatticeVariable> _variables = new ();
+    protected Dictionary<string, Context> _subContexts = new ();
 
     public Context(string name)
     {

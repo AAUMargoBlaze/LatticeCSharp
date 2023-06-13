@@ -57,7 +57,14 @@ public static class ContextManager
 
     public static Context EnterSubContext(string name)
     {
-        ContextStack.Push(GetCurrentContext().GetSubContext(name));
+        var subContext = GetCurrentContext().GetSubContext(name);
+        if(subContext is GraphContext)
+        {
+            PushDownVariablesToSubContext(ref subContext);
+            PushDownGraphsToSubContext(ref subContext);
+        }
+        ContextStack.Push(subContext);
+
         return GetCurrentContext();
     }
 
@@ -80,12 +87,23 @@ public static class ContextManager
         return DeclaredGraphContexts[Id];
     }
 
+    public static GraphContext ResetGraphContext(string Id)
+    {
+        var target = DeclaredGraphContexts[Id];
+        target.Reset();
+        return target;
+    }
+
     private static void PushDownVariablesToSubContext(ref Context newContext)
     {
         var parentVars = GetCurrentContext().ReturnAllDeclaredVariables();
         foreach (var kvp in parentVars)
         {
-            newContext.DeclareVariable(kvp.Key, kvp.Value);
+            try
+            {
+                newContext.DeclareVariable(kvp.Key, kvp.Value);
+            }
+            catch(Exception _) {}
         }
     }
     private static void PushDownGraphsToSubContext(ref Context newContext)
@@ -93,7 +111,11 @@ public static class ContextManager
         var parentContexts = GetCurrentContext().ReturnAllDeclaredGraphs();
         foreach (var kvp in parentContexts)
         {
-            newContext.DeclareContext(kvp.Key, kvp.Value);
+            try
+            {
+                newContext.DeclareContext(kvp.Key, kvp.Value);
+            }
+            catch(Exception _) {}
         }
     }
 }

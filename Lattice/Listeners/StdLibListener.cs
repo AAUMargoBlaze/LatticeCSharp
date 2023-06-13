@@ -27,6 +27,8 @@ public class StdLibListener : LatticeBaseListener
         GlobalFileManager.Write($"from lattice import Node {Program.NewLine}");
         GlobalFileManager.Write($"from lattice import VisualEdge as Edge {Program.NewLine}");
         GlobalFileManager.Write($"from lattice import BBTree, Graph {Program.NewLine}");
+        GlobalFileManager.Write($"import random {Program.NewLine}");
+        GlobalFileManager.Write($"from extra_lib import * {Program.NewLine}");
     }
 
     public override void ExitPrintstatement(LatticeParser.PrintstatementContext context)

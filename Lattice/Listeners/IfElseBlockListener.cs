@@ -31,7 +31,7 @@ public class IfElseBlockListener : LatticeBaseListener
 
     public override void ExitElseblock(LatticeParser.ElseblockContext context)
     {
-        ExitIfElseContext();
+        ContextManager.ExitSubContext();
     }
     
     private void OpenNewIfElseContext()

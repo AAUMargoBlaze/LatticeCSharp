@@ -9,8 +9,19 @@ public class ExpressionListener : LatticeBaseListener
     public override void ExitIDCASE(LatticeParser.IDCASEContext context)
     {
         var id = context.ID().GetText();
-        var variable = ContextManager.GetCurrentContext().GetVariable(id);
-        var expression = new LatticeExpression(id, variable.Type);
+        LatticeExpression expression = null;
+        try
+        {
+            var variable = ContextManager.GetCurrentContext().GetVariable(id);
+            expression = new LatticeExpression(id, variable.Type);
+        }
+        catch (Exception e)
+        {
+            var graph = (GraphContext)ContextManager.GetCurrentContext();
+            var node = graph.GetNode(id);
+            expression = new LatticeExpression($"get_node_from_list('{node.Id}', '{graph.Name}')", node.Type);
+        }
+
         ListenerHelper.SharedListenerStack.Push(expression);
 
     }

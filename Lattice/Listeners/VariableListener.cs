@@ -36,8 +36,9 @@ public class VariableListener : LatticeBaseListener
     {
         try
         {
-            var node = ContextManager.GetCurrentGraphContext().GetNode(expression.ToString());
-            targetVar.SetValue(new LatticeExpression(node.PythonId, node.Type));
+            var currentGraph = ContextManager.GetCurrentGraphContext();
+            var node = currentGraph.GetNode(expression.ToString());
+            targetVar.SetValue(new LatticeExpression($"get_node_from_list('{node.Id}', '{currentGraph.Name}')", node.Type));
         }
         catch (Exception e)
         {

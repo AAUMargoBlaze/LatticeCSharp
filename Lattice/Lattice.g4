@@ -45,7 +45,7 @@ assignval : outmostexpr | outmostboolexpr;
 boolval :KEYWORD_TRUE | KEYWORD_FALSE; 
 tailgraphmanip : LEFT_BRACE statement* RIGHT_BRACE;
 addref : OP_REF ID SEMICOLON; 
-addclone : OP_CLONE ID SEMICOLON; 
+addclone : OP_CLONE ID (KEYWORD_AS ID)? SEMICOLON; 
 tailaddrel : OP_REL_LEFT number COMMA STRING OP_REL_RIGHT ID; 
 outmostexpr: expr;
 expr : OP_SUB expr     # UMINUS 
@@ -142,6 +142,7 @@ TYPE_GRAPH : 'graph';
 TYPE_RELATIONSHIP : 'rel';
 
 KEYWORD_FMAP : 'fmap';
+KEYWORD_AS : 'as';
 KEYWORD_IF : 'if';
 KEYWORD_ELSE : 'else';
 KEYWORD_WHILE : 'while';

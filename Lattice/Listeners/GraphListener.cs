@@ -38,10 +38,20 @@ public class GraphListener : LatticeBaseListener
         if (greatGranny is LatticeParser.VardeclContext)
         {
             var id = ((LatticeParser.VardeclContext)greatGranny).ID().GetText();
-            OpenNewContext(id);
-            
-            var currentGraphContext = ContextManager.GetCurrentContext();
-            ListenerHelper.SharedListenerStack.Push(new LatticeExpression(currentGraphContext.Name, LatticeType.Graph));
+            try
+            {
+                OpenNewContext(id);
+                var currentGraphContext = ContextManager.GetCurrentContext();
+                ListenerHelper.SharedListenerStack.Push(new LatticeExpression(currentGraphContext.Name, LatticeType.Graph));
+            }
+            catch (ArgumentException e)
+            {
+                var reopened = ContextManager.ResetGraphContext(id);
+                ContextManager.EnterSubContext(reopened.Name);
+                GlobalFileManager.Write($"{reopened.Name} = reset_graph('{reopened.Name}') {Program.NewLine}");
+                ListenerHelper.SharedListenerStack.Push(new LatticeExpression(reopened.Name, LatticeType.Graph));
+            }
+           
         }
         else if (granny is LatticeParser.VarassignorgraphmaniporaddrelContext)
         {
@@ -74,36 +84,72 @@ public class GraphListener : LatticeBaseListener
     public override void ExitAddclone(LatticeParser.AddcloneContext context)
     {
         var currentGraphContext = ContextManager.GetCurrentGraphContext();
-        var id = context.ID().GetText();
+        var id = context.ID().First().GetText();
+        var asId = 1 < context.ID().Length ? context.ID()[1].GetText() : null;
         Node oldNode;
         
-        //as you can tell, I gave up about code cleanliness here
+        //as you can tell, I gave up code cleanliness about here
         try
         {
             try
             {
                 oldNode = currentGraphContext.GetNode(id);
                 var newNode = (Node)oldNode.Clone();
-                currentGraphContext.DeclareNode(newNode.Id, newNode);
-                GlobalFileManager.Write(
-                    $"{currentGraphContext.Name}.add_nodes({newNode.PythonId} = {newNode.PythonId}) {Program.NewLine}");
-                GlobalFileManager.Write(
-                    $"{newNode.PythonId} = {currentGraphContext.Name}.get_node(\"{oldNode.Id}\").copy() {Program.NewLine}");
+                currentGraphContext.DeclareNode(asId ?? newNode.Id, newNode);
+                GlobalFileManager.Write($"name, node = clone({asId ?? oldNode.Id},'{currentGraphContext.Name}'){Program.NewLine}");
+                GlobalFileManager.Write("kwargs = {name: node}"+Program.NewLine);
+                GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes(**kwargs) {Program.NewLine}");
 
             }
             catch (Exception e)
             {
                 var cloneVar = (LatticeVariable)currentGraphContext.GetVariable(id).Clone();
-                var node = new Node(cloneVar.Id, cloneVar.Type, cloneVar.PythonId);
-                currentGraphContext.DeclareNode(node.Id, node);
-                GlobalFileManager.Write(
-                    $"{currentGraphContext.Name}.add_nodes({node.PythonId}=Node({node.Value})) {Program.NewLine}");
+                var node = new Node(asId ?? cloneVar.Id, cloneVar.Type, cloneVar.PythonId);
+                currentGraphContext.DeclareNode(asId ?? node.Id, node);
+                GlobalFileManager.Write($"name, node = clone_variable('{asId ?? cloneVar.Id}',{cloneVar.Id},'{currentGraphContext.Name}'){Program.NewLine}");
+                GlobalFileManager.Write("kwargs = {name: node}"+Program.NewLine);
+                GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes(**kwargs) {Program.NewLine}");
             }
         }
         catch (Exception e)
         {
             var graphToBeCloned = (GraphContext)ContextManager.GetContext(id);
+            var parentVars = graphToBeCloned.ReturnAllDeclaredVariables();
             
+            foreach (var kvp in parentVars)
+            {
+                try
+                {
+                    currentGraphContext.DeclareVariable(kvp.Key, kvp.Value);
+                }
+                catch(Exception _) {}
+            }
+            
+            
+            var parentContexts = graphToBeCloned.ReturnAllDeclaredGraphs();
+
+            foreach (var kvp in parentContexts)
+            {
+                try
+                {
+                    currentGraphContext.DeclareContext(kvp.Key, kvp.Value);
+                }
+                catch(Exception _) {}
+            }
+            
+            
+            var parentNodes = graphToBeCloned.ReturnAllDeclaredNodes();
+
+            foreach (var kvp in parentNodes)
+            {
+                try
+                {
+                    currentGraphContext.DeclareNode(kvp.Key, kvp.Value);
+                }
+                catch(Exception _) {}
+            }
+            
+            GlobalFileManager.Write($"clone_graph('{graphToBeCloned.Name}', '{currentGraphContext.Name}',{currentGraphContext.Name}) {Program.NewLine}");
         }
         
     }
@@ -114,15 +160,46 @@ public class GraphListener : LatticeBaseListener
         var ids = context.ID();
         var currentGraph = ContextManager.GetCurrentGraphContext();
 
-        var predecessor = currentGraph.GetNode(parentContext.ID().GetText());
-        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{predecessor.Id}').add_edge(");
+        Node predecessor = null;
+        try
+        {
+            predecessor = currentGraph.GetNode(parentContext.ID().GetText());
+            GlobalFileManager.Write($"(get_node_from_list('{predecessor.Id}', '{currentGraph.Name}') or {currentGraph.Name}.get_node('{predecessor.Id}')).add_edge(");
+        }
+        catch (Exception e)
+        {
+            var variable = currentGraph.GetVariable(parentContext.ID().GetText());
+            predecessor = new Node(variable.Id, variable.Type);
+            GlobalFileManager.Write($"(get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id}).add_edge(");
+        }
+
         
         var cost = Convert.ToInt32(context.number().GetText());
         var label = context.STRING().GetText().Replace("\"", string.Empty);
         GlobalFileManager.Write($"Edge(\"{label}\"), ");
-        
-        var successor = currentGraph.GetNode(context.ID().GetText());
-        GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}')");
+
+        Node successor = null;
+        try
+        {
+            successor = currentGraph.GetNode(context.ID().GetText());
+            GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}')");
+        }
+        catch (Exception e)
+        {
+            var variable = currentGraph.GetVariable(context.ID().GetText());
+            successor = new Node(variable.Id, variable.Type);
+            GlobalFileManager.Write($"(get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id})");
+            var rel = new DirectedRelationship(predecessor, successor)
+            {
+                Cost = cost,
+                Label = label
+            };
+            ContextManager.GetCurrentGraphContext().DeclareRelationship(rel);
+            GlobalFileManager.Write($") {Program.NewLine}");
+            GlobalFileManager.Write($"sync_nodes_after_rel('{currentGraph.Name}', which_graph((get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id}))");
+            GlobalFileManager.Write($") {Program.NewLine}");
+            return;
+        }
 
         var relationship = new DirectedRelationship(predecessor, successor)
         {
@@ -130,8 +207,8 @@ public class GraphListener : LatticeBaseListener
             Label = label
         };
         ContextManager.GetCurrentGraphContext().DeclareRelationship(relationship);
-
         GlobalFileManager.Write($") {Program.NewLine}");
+
     }
 
     private void OpenNewContext(string id)
