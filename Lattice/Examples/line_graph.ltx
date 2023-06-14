@@ -1,0 +1,25 @@
+int k = 5;
+int iterator = 0;
+str nodeVal = "node";
+str root1 = "";
+
+graph Line {}
+
+while(iterator < k) {
+    if(iterator == 0) {
+        Line {
+            clone nodeVal as root2;
+        }
+    }
+    else {
+        Line {
+            root1 = root2;
+            clone nodeVal as root2;
+            root2 |-0,"next"-> root1
+        }
+
+    }
+    iterator = iterator+1;
+}
+
+print Line;

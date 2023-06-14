@@ -173,7 +173,8 @@ public class GraphListener : LatticeBaseListener
         {
             var variable = currentGraph.GetVariable(parentContext.ID().GetText());
             predecessor = new Node(variable.Id, variable.Type);
-            GlobalFileManager.Write($"(get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id}).add_edge(");
+            GlobalFileManager.Write($"{currentGraph.Name}.get_node(str({predecessor.Id})).add_edge(");
+            // GlobalFileManager.Write($"(get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id}).add_edge(");
         }
 
         
@@ -185,6 +186,7 @@ public class GraphListener : LatticeBaseListener
         try
         {
             successor = currentGraph.GetNode(context.ID().GetText());
+            GlobalFileManager.Write($"{successor.Id}");
         }
         catch (Exception e)
         {
