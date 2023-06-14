@@ -48,7 +48,7 @@ public class GraphListener : LatticeBaseListener
             {
                 var reopened = ContextManager.ResetGraphContext(id);
                 ContextManager.EnterSubContext(reopened.Name);
-                GlobalFileManager.Write($"{reopened.Name} = reset_graph('{reopened.Name}') {Program.NewLine}");
+                GlobalFileManager.Write($"{reopened.Name} = Graph() {Program.NewLine}");
                 ListenerHelper.SharedListenerStack.Push(new LatticeExpression(reopened.Name, LatticeType.Graph));
             }
            
@@ -106,9 +106,11 @@ public class GraphListener : LatticeBaseListener
                 var cloneVar = (LatticeVariable)currentGraphContext.GetVariable(id).Clone();
                 var node = new Node(asId ?? cloneVar.Id, cloneVar.Type, cloneVar.PythonId);
                 currentGraphContext.DeclareNode(asId ?? node.Id, node);
-                GlobalFileManager.Write($"name, node = clone_variable('{asId ?? cloneVar.Id}',{cloneVar.Id},'{currentGraphContext.Name}'){Program.NewLine}");
-                GlobalFileManager.Write("kwargs = {name: node}"+Program.NewLine);
-                GlobalFileManager.Write($"{currentGraphContext.Name}.add_nodes(**kwargs) {Program.NewLine}");
+                GlobalFileManager.Write($"{asId} = uuid.uuid4() {Program.NewLine}");
+                GlobalFileManager.Write($"{currentGraphContext.Name}." +
+                                        $"add_nodes(**{{str({asId ?? cloneVar.Id}): " +
+                                        $"Node({cloneVar.Id}" + 
+                                        $")}}){Program.NewLine}");
             }
         }
         catch (Exception e)
@@ -149,7 +151,7 @@ public class GraphListener : LatticeBaseListener
                 catch(Exception _) {}
             }
             
-            GlobalFileManager.Write($"clone_graph('{graphToBeCloned.Name}', '{currentGraphContext.Name}',{currentGraphContext.Name}) {Program.NewLine}");
+            GlobalFileManager.Write($"{graphToBeCloned.Name}.deepcopy({currentGraphContext.Name}) {Program.NewLine}");
         }
         
     }
@@ -164,7 +166,8 @@ public class GraphListener : LatticeBaseListener
         try
         {
             predecessor = currentGraph.GetNode(parentContext.ID().GetText());
-            GlobalFileManager.Write($"(get_node_from_list('{predecessor.Id}', '{currentGraph.Name}') or {currentGraph.Name}.get_node('{predecessor.Id}')).add_edge(");
+            // GlobalFileManager.Write($"(get_node_from_list('{predecessor.Id}', '{currentGraph.Name}') or {currentGraph.Name}.get_node('{predecessor.Id}')).add_edge(");
+            GlobalFileManager.Write($"{currentGraph.Name}.get_node(str({predecessor.Id})).add_edge(");
         }
         catch (Exception e)
         {
@@ -182,22 +185,19 @@ public class GraphListener : LatticeBaseListener
         try
         {
             successor = currentGraph.GetNode(context.ID().GetText());
-            GlobalFileManager.Write($"{currentGraph.Name}.get_node('{successor.Id}')");
         }
         catch (Exception e)
         {
             var variable = currentGraph.GetVariable(context.ID().GetText());
             successor = new Node(variable.Id, variable.Type);
-            GlobalFileManager.Write($"(get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id})");
+            GlobalFileManager.Write($"{variable.Id})");
             var rel = new DirectedRelationship(predecessor, successor)
             {
                 Cost = cost,
                 Label = label
             };
             ContextManager.GetCurrentGraphContext().DeclareRelationship(rel);
-            GlobalFileManager.Write($") {Program.NewLine}");
-            GlobalFileManager.Write($"sync_nodes_after_rel('{currentGraph.Name}', which_graph((get_node_from_list('{variable.Id}', '{currentGraph.Name}') or {variable.Id}))");
-            GlobalFileManager.Write($") {Program.NewLine}");
+            GlobalFileManager.Write($"{Program.NewLine}");
             return;
         }
 

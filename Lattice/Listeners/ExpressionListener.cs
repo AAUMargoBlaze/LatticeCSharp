@@ -19,7 +19,8 @@ public class ExpressionListener : LatticeBaseListener
         {
             var graph = (GraphContext)ContextManager.GetCurrentContext();
             var node = graph.GetNode(id);
-            expression = new LatticeExpression($"get_node_from_list('{node.Id}', '{graph.Name}')", node.Type);
+            // expression = new LatticeExpression($"get_node_from_list('{node.Id}', '{graph.Name}')", node.Type);
+            expression = new LatticeExpression($"{graph.Name}.get_node(str({node.Id}))", node.Type);
         }
 
         ListenerHelper.SharedListenerStack.Push(expression);
@@ -40,10 +41,12 @@ public class ExpressionListener : LatticeBaseListener
 
     public override void ExitDOUBLE(LatticeParser.DOUBLEContext context)
     {
-        var val = context.number().INTEGER().GetText();
+        var typeval = context.number().INTEGER();
+        var val = "";
         LatticeType type;
-        if (val != null)
+        if (typeval != null)
         {
+            val = context.number().INTEGER().GetText();
             type = LatticeType.Int;
         }
         else

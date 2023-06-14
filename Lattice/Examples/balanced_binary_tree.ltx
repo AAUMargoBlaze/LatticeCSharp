@@ -1,0 +1,52 @@
+int k = 5;
+int iterator = 0;
+str nodeVal = "node";
+
+str leftRoot = "";
+str rightRoot ="";
+
+graph left {}
+graph right {}
+graph bTree {
+}
+
+while(iterator < k) {
+    if(iterator == 0) {
+        bTree {
+            clone nodeVal as newRoot;
+        }
+        left{
+           clone bTree;
+        }
+        right{
+           clone bTree;
+        }
+    }
+    else {
+        graph bTree {}
+        left {
+                leftRoot = newRoot;
+                right {
+                    rightRoot = newRoot;
+                    bTree {
+                        clone nodeVal as newRoot;
+                        newRoot |-0,"left"-> leftRoot
+                        newRoot |-0,"right"-> rightRoot
+                    }
+                }
+        }
+
+        graph left{}
+        graph right{}
+        
+        left{
+           clone bTree;
+        }
+        right{
+           clone bTree;
+        }
+    }
+    iterator = iterator+1;
+}
+
+print bTree;
